@@ -6,7 +6,6 @@ import CustomSelect from "../customFields/CustomSelect";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../slice/userSlice";
-// import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const dispatch = useDispatch();
