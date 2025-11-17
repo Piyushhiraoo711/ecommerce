@@ -2,19 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { USER_API_END_POINT } from "../utils/constant.js";
 import axios from "axios";
 
-export const loadUser = createAsyncThunk(
-  "auth/loadUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${USER_API_END_POINT}/me`, {
-        withCredentials: true,
-      });
-      return data.user;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Load user failed");
-    }
-  }
-);
+// --------------------- USER LOAD ----------------------
+export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
+  const res = await axios.get("/api/auth/me", { withCredentials: true });
+  return res.data.user;
+});
 
 // -------------------- REGISTER USER --------------------
 export const registerUser = createAsyncThunk(
@@ -71,6 +63,21 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//--------------------- LOGOUT USER -------------------
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
+      return true;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Logout failed");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -80,25 +87,19 @@ const authSlice = createSlice({
     otpPending: false,
     isAuthenticated: false,
   },
-  reducers: {
-    logout: (state) => {
-      state.user = null;
-      localStorage.removeItem("token");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // ---------------- LOAD USER ----------------
-      .addCase(loadUser.fulfilled, (state, action) => {
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.role = action.payload.role;
-        state.isAuthenticated = true;
         state.loading = false;
       })
-      .addCase(loadUser.rejected, (state) => {
+      .addCase(fetchUser.rejected, (state) => {
         state.user = null;
-        state.role = null;
-        state.isAuthenticated = false;
         state.loading = false;
       })
       // ---------------- REGISTER ----------------
@@ -143,6 +144,11 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // --------------- LOGOUT -----------------
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });

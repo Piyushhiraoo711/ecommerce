@@ -45,6 +45,8 @@ export default function Signin() {
 
       const userRole = resultAction.payload?.user?.role;
       toast.success(resultAction.payload?.message || "Login successful!");
+      
+      console.log("Logged in user role:", userRole);
 
       switch (userRole) {
         case "admin":

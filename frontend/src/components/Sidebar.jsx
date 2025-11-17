@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   HomeIcon,
   UsersIcon,
@@ -7,26 +8,38 @@ import {
   DocumentTextIcon,
   ChartPieIcon,
 } from "@heroicons/react/24/outline";
+import { logoutUser } from "../slice/userSlice";
+import toast from "react-hot-toast";
 
 const Sidebar = ({ role, user }) => {
   const location = useLocation();
-  const adminLinks = [
-  { name: "Dashboard", icon: HomeIcon, path: "/admin/dashboard" },
-  { name: "All Users", icon: UsersIcon, path: "/admin/all-user" },
-  // { name: "Top Users", icon: UsersIcon, path: "/admin/top-users" },
-  { name: "All Sellers", icon: UsersIcon, path: "/admin/all-seller" },
-  // { name: "Top Sellers", icon: UsersIcon, path: "/admin/top-seller" },
-  { name: "All Products", icon: FolderIcon, path: "/admin/all-products" },
-  // { name: "Top Products", icon: FolderIcon, path: "/admin/top-products" },
-  { name: "All Orders", icon: FolderIcon, path: "/admin/all-orders" },
-];
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-const sellerLinks = [
-  { name: "Dashboard", icon: HomeIcon, path: "/seller/dashboard" },
-  { name: "Add Product", icon: HomeIcon, path: "/seller/create-product" },
-  { name: "My Products", icon: FolderIcon, path: "/seller/get-products" },
-  { name: "My Orders", icon: HomeIcon, path: "/seller/get-orders" },
-];
+  const handleLogout = async () => {
+    console.log("logout");
+    await dispatch(logoutUser());
+    toast.success("Logged Out Successfully");
+    navigate("/signin");
+  };
+  const adminLinks = [
+    { name: "Dashboard", icon: HomeIcon, path: "/admin/dashboard" },
+    { name: "All Users", icon: UsersIcon, path: "/admin/all-user" },
+    // { name: "Top Users", icon: UsersIcon, path: "/admin/top-users" },
+    { name: "All Sellers", icon: UsersIcon, path: "/admin/all-seller" },
+    // { name: "Top Sellers", icon: UsersIcon, path: "/admin/top-seller" },
+    { name: "All Products", icon: FolderIcon, path: "/admin/all-products" },
+    // { name: "Top Products", icon: FolderIcon, path: "/admin/top-products" },
+    { name: "All Orders", icon: FolderIcon, path: "/admin/all-orders" },
+  ];
+
+  const sellerLinks = [
+    // { name: "Dashboard", icon: HomeIcon, path: "/seller/dashboard" },
+    { name: "Add Product", icon: HomeIcon, path: "/seller/create-product" },
+    { name: "My Products", icon: FolderIcon, path: "/seller/get-products" },
+    { name: "My Orders", icon: HomeIcon, path: "/seller/get-orders" },
+    { name: "Logout", icon: HomeIcon, logout: true },
+  ];
 
   const links = role === "admin" ? adminLinks : sellerLinks;
 
@@ -37,18 +50,31 @@ const sellerLinks = [
           MyPanel
         </div>
         <nav className="mt-6">
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`flex items-center px-6 py-3 hover:bg-gray-700 ${
-                location.pathname === link.path ? "bg-gray-700" : ""
-              }`}
-            >
-              <link.icon className="h-5 w-5 mr-3" />
-              <span>{link.name}</span>
-            </Link>
-          ))}
+          {links.map((link) =>
+            link.logout ? (
+              // Logout button
+              <button
+                key={link.name}
+                onClick={handleLogout}
+                className="w-full flex items-center px-6 py-3 hover:bg-gray-700 text-left"
+              >
+                <link.icon className="h-5 w-5 mr-3" />
+                <span>{link.name}</span>
+              </button>
+            ) : (
+              // Normal Navigation Link
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`flex items-center px-6 py-3 hover:bg-gray-700 ${
+                  location.pathname.includes(link.path) ? "bg-gray-700" : ""
+                }`}
+              >
+                <link.icon className="h-5 w-5 mr-3" />
+                <span>{link.name}</span>
+              </Link>
+            )
+          )}
         </nav>
       </div>
 

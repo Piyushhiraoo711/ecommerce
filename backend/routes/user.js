@@ -19,19 +19,25 @@ import { userSchemaValidate } from "../modelValidation/userValidationModelJoi.js
 
 const router = express.Router();
 
+// router.get("/me", verifyToken, async (req, res) => {
+//   try {
+//     res.status(200).json({
+//       success: true,
+//       user: req.user,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// });
+
+// routes/auth.js
 router.get("/me", verifyToken, async (req, res) => {
-  try {
-    res.status(200).json({
-      success: true,
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  res.json({ success: true, user: req.user }); 
 });
+
 
 router.route("/").get(getUser);
 router.route("/register").post(validateUserjoi(userSchemaValidate), createUser);

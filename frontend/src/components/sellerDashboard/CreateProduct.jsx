@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import CustomInput from "../../components/customFields/CustomInput.jsx";
 import CustomButton from "../../components/customFields/CustomButton.jsx";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { createProduct } from "../../slice/productSlice.js";
 const CreateProduct = () => {
+  const dispatch = useDispatch();
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -22,34 +25,71 @@ const CreateProduct = () => {
   };
 
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files);
+    const files = Array.from(e.target.files);
 
     setProduct((prev) => ({
       ...prev,
-      images: [...prev.images, ...selectedImages],
+      images: files,
     }));
+
+    console.log("Selected Images:", files);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Submitting product:", product);
-    const { name, description, price, category, brand, stock, images } =
-      product;
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!name || !description || !price || !category || !brand || !stock) {
-      toast.error("Please fill in all fields");
-      return;
-    } else if (price <= 0) {
-      toast.error("Price must be greater than zero");
-      return;
-    } else if (stock <= 0) {
-      toast.error("Stock cannot be zero");
-      return;
-    } else if (images.length === 0) {
-      toast.error("Please upload at least one product image");
-      return;
+  const { name, description, price, category, brand, stock, images } = product;
+
+  if (!name || !description || !price || !category || !brand || !stock) {
+    toast.error("Please fill in all fields");
+    return;
+  } else if (price <= 0) {
+    toast.error("Price must be greater than zero");
+    return;
+  } else if (stock <= 0) {
+    toast.error("Stock cannot be zero");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("brand", brand);
+    formData.append("stock", stock);
+
+    images.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    console.log("form-data", ...formData);
+
+    const response = await dispatch(createProduct(formData));
+
+    if (response.meta.requestStatus === "fulfilled") {
+      toast.success("Product created successfully!");
+
+      setProduct({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        brand: "",
+        stock: "",
+        images: [],
+      });
+    } else {
+      toast.error(response.payload || "Failed to create product");
     }
-  };
+  } catch (error) {
+    console.error("Error creating product:", error);
+    toast.error("Something went wrong");
+  }
+};
+
 
   return (
     <>

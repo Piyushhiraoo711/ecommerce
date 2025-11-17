@@ -6,6 +6,7 @@ import {
   deleteProduct,
   getProduct,
   getProductById,
+  getSellerProducts,
   updateProduct,
 } from "../controller/productController.js";
 import verifyToken from "../middleware/verifyToken.js";
@@ -17,7 +18,9 @@ const router = express.Router();
 
 router.route("/").get(getProduct);
 
-router .route("/create") .post( verifyToken, authorizeRoles("seller"), upload.array("images", 10), validateProductjoi(productSchemaValidate), createProduct);
+router.route("/create") .post( verifyToken, authorizeRoles("seller"), upload.array("images", 10), validateProductjoi(productSchemaValidate), createProduct);
+
+router.route("/seller-products").get(verifyToken, authorizeRoles("seller"), getSellerProducts);
 
 router.route("/:id").put(verifyToken, authorizeRoles("seller", "admin"), updateProduct);
 

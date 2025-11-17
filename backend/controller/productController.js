@@ -148,3 +148,13 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
+// seller itself can see his products
+export const getSellerProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ createdBy: req.user._id });
+    res.json({ success: true, products });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

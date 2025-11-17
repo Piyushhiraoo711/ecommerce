@@ -27,14 +27,42 @@ export const getProductById = createAsyncThunk(
   }
 );
 
+export const fetchSellerProducts = createAsyncThunk(
+  "product/fetchSellerProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${PRODUCT_API_END_POINT}/seller-products`, {
+        withCredentials: true,
+      });
+      return res.data.products;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to fetch products"
+      );
+    }
+  }
+);
+
 export const createProduct = createAsyncThunk(
   "product/createProduct",
-  async (productData, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const res = await axios.post(PRODUCT_API_END_POINT, productData);
+      console.log("createProduct - formData:", ...formData);
+      const res = await axios.post(
+        `${PRODUCT_API_END_POINT}/create`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+      console.log("Response from createProduct:", res);
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      console.log("Error in createProduct:", error.response.data);
+      return rejectWithValue(
+        error.response?.data || "Failed to create product"
+      );
     }
   }
 );
@@ -45,11 +73,13 @@ export const updateProduct = createAsyncThunk(
     try {
       const res = await axios.put(
         `${PRODUCT_API_END_POINT}/${id}`,
-        productData
+        productData,
+        { withCredentials: true }
       );
+      console.log(res.data)
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -58,7 +88,9 @@ export const deleteProduct = createAsyncThunk(
   "product/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`${PRODUCT_API_END_POINT}/${id}`);
+      await axios.delete(`${PRODUCT_API_END_POINT}/${id}`, {
+        withCredentials: true,
+      });
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -71,7 +103,9 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     product: null,
+    sellerProduct: [],
     cart: [],
+    orders: [],
     loading: false,
     error: null,
   },
@@ -105,6 +139,19 @@ const productSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchSellerProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSellerProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sellerProduct = action.payload;
+      })
+      .addCase(fetchSellerProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -145,6 +192,12 @@ const productSlice = createSlice({
           (p) => p._id === action.payload._id
         );
         if (index !== -1) state.products[index] = action.payload;
+
+        const sellerIndex = state.sellerProduct.findIndex(
+          (p) => p._id === action.payload._id
+        );
+        if (sellerIndex !== -1)
+          state.sellerProduct[sellerIndex] = action.payload;
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;

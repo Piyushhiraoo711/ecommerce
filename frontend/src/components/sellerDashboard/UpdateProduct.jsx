@@ -1,20 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInput from "../../components/customFields/CustomInput.jsx";
 import CustomButton from "../../components/customFields/CustomButton.jsx";
 import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductById, updateProduct } from "../../slice/productSlice.js";
 
 const UpdateProduct = () => {
-  const [product, setProduct] = useState({
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { product } = useSelector((state) => state.product);
+
+  const [productSelected, setProductSelected] = useState(() => product || {
     name: "",
     description: "",
     price: "",
     category: "",
     brand: "",
+    stock: "",
   });
+
+  useEffect(() => {
+    dispatch(getProductById(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (product) {
+      setProductSelected({ ...product });
+    }
+  }, [product]);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
-    setProduct((prevUser) => ({
+    setProductSelected((prevUser) => ({
       ...prevUser,
       [name]: value,
     }));
@@ -23,16 +42,37 @@ const UpdateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting product:", product);
-    const { name, description, price, category, brand } = product;
+    const { name, description, price, category, brand, stock } =
+      productSelected;
 
-    if (!name || !description || !price || !category || !brand) {
+    if (!name || !description || !price || !category || !brand || !stock) {
       toast.error("Please fill in all fields");
       return;
     } else if (price <= 0) {
       toast.error("Price must be greater than zero");
       return;
     }
-    console.log(product)
+    try {
+      const res = await dispatch(
+        updateProduct({ id, productData: productSelected })
+      );
+      if (res.meta.requestStatus === "fulfilled") {
+        toast.success("Product updated successfully!");
+        navigate("/seller");
+      } else {
+        toast.error(res.payload || "Failed to update product");
+      }
+      setProductSelected({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        brand: "",
+        stock: "",
+      });
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -47,7 +87,7 @@ const UpdateProduct = () => {
             label="Product Name"
             name="name"
             type="text"
-            value={product.name}
+            value={productSelected.name}
             onChange={handleChange}
             placeholder="Product name"
           />
@@ -56,7 +96,7 @@ const UpdateProduct = () => {
             label="Product Description"
             name="description"
             type="text"
-            value={product.description}
+            value={productSelected.description}
             onChange={handleChange}
             placeholder="Product description"
           />
@@ -65,7 +105,7 @@ const UpdateProduct = () => {
             label="Product Price"
             name="price"
             type="number"
-            value={product.price}
+            value={productSelected.price}
             onChange={handleChange}
             placeholder="Product price"
           />
@@ -74,7 +114,7 @@ const UpdateProduct = () => {
             label="Product Category"
             name="category"
             type="text"
-            value={product.category}
+            value={productSelected.category}
             onChange={handleChange}
             placeholder="Product category"
           />
@@ -83,9 +123,19 @@ const UpdateProduct = () => {
             label="Product Brand"
             name="brand"
             type="text"
-            value={product.brand}
+            value={productSelected.brand}
             onChange={handleChange}
             placeholder="Product brand"
+          />
+
+          <CustomInput
+            id="stock"
+            label="Product Stock"
+            name="stock"
+            type="number"
+            value={productSelected.stock}
+            onChange={handleChange}
+            placeholder="Product stock"
           />
           <CustomButton type="submit">Add Product</CustomButton>
         </form>
