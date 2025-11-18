@@ -1,6 +1,7 @@
 import express from "express";
 import verifyToken from "../middleware/verifyToken.js";
 import {
+  cancelOrder,
   createOrder,
   deleteOrder,
   getAllMyOrders,
@@ -25,5 +26,7 @@ router.route("/:id").get(verifyToken, authorizeRoles("user", "seller", "admin"),
 router.route("/:id").put(verifyToken, authorizeRoles("seller", "admin"), updateOrderStatus);
 
 router.route("/:id").delete(verifyToken, authorizeRoles("seller", "admin"), deleteOrder);
+
+router.route("/cancel-order/:id").delete(verifyToken, authorizeRoles("user"), cancelOrder)
 
 export default router;

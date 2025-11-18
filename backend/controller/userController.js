@@ -417,7 +417,6 @@ export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
-    // console.log("updatedData", updatedData.lastName);
     const updateUser = await User.findByIdAndUpdate(id, updatedData, {
       new: true,
     });

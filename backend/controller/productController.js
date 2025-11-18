@@ -6,7 +6,6 @@ const cloudinary = cloudinaryModule.v2;
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.find();
-    console.log("product");
     return res.json({ success: true, product });
   } catch (error) {
     res.status(500).send(error);

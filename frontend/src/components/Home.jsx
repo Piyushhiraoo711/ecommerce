@@ -1,13 +1,12 @@
 import React from "react";
-import Navbar from "./Navbar.jsx";
-import Sidebar from "./Sidebar.jsx";
 import AllProducts from "./userDashboard/AllProducts.jsx";
-
+import UserNavbar from "./userDashboard/UserNavbar.jsx";
 
 const Home = () => {
   return (
     <div>
-    < AllProducts />
+      <UserNavbar />
+      <AllProducts />
     </div>
   );
 };

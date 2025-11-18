@@ -3,12 +3,14 @@ import authReducer from "../slice/userSlice.js";
 import productReducer from "../slice/productSlice.js";
 import adminReducer from "../slice/adminSlice.js";
 import sellerReducer from "../slice/sellerSlice.js"
+import orderReducer from "../slice/orderSlice.js";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     product : productReducer,
     admin: adminReducer,
-    seller : sellerReducer
+    seller : sellerReducer,
+    order : orderReducer
   },
 });

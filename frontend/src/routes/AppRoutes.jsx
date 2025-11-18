@@ -18,8 +18,13 @@ import UpdateProduct from "../components/sellerDashboard/UpdateProduct.jsx";
 import GetProductDetails from "../components/userDashboard/GetProductDetails.jsx";
 import DashboardAdmin from "../components/adminDashboard/DashboardAdmin.jsx";
 import DashboardSeller from "../components/sellerDashboard/DashboardSeller.jsx";
-import ProtectedRoute from "../protectedRoute/ProtectedRoute.jsx"
+import ProtectedRoute from "../protectedRoute/ProtectedRoute.jsx";
 import { Route, Routes } from "react-router-dom";
+import MyProfile from "../components/userDashboard/MyProfile.jsx";
+import UpdateProfile from "../components/userDashboard/UpdateProfile.jsx";
+import PlaceOrder from "../components/userDashboard/PlaceOrder.jsx";
+import MyOrders from "../components/userDashboard/MyOrders.jsx";
+import Cart from "../components/userDashboard/Cart.jsx";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +38,11 @@ const AppRoutes = () => {
       <Route path="/forget-otp-verify" element={<ForgetOtpVerify />} />
       <Route path="/reset-password" element={<ResetOtp />} />
       <Route path="/product/:id" element={<GetProductDetails />} />
+      <Route path="/profile" element={<MyProfile />} />
+      <Route path="/update-profile" element={<UpdateProfile />} />
+      <Route path="/place-order/:id" element={<PlaceOrder />} />
+      <Route path="/my-orders" element={<MyOrders />} />
+      <Route path="/cart" element={<Cart/>}/>
 
       {/* Seller Routes (Protected) */}
       <Route

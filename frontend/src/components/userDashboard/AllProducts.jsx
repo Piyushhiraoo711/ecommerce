@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, getProducts } from "../../slice/productSlice";
+import { getProducts } from "../../slice/productSlice";
 import { Link, useNavigate } from "react-router-dom";
 import CustomButton from "../customFields/CustomButton";
 
 export default function AllProducts() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { products, cart, loading } = useSelector((state) => state.product);
+  const { products } = useSelector((state) => state.product);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -15,14 +15,15 @@ export default function AllProducts() {
 
   const handleBuyNow = (id) => {
     console.log("Buy Now clicked for product:", id);
+    navigate(`/place-order/${id}`);
   };
 
-  const handleAddToCart = (id) => {
-    console.log("Add to cart for product:", id);
+  const handleAddToCart = (productId) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-black min-h-screen ">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
 
@@ -35,7 +36,6 @@ export default function AllProducts() {
               >
                 <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                   <Link to={`/product/${product._id}`}>
-                    {console.log("sakjdnhskjad")}
                     <img
                       src={
                         product.images && product.images.length > 0
@@ -59,7 +59,13 @@ export default function AllProducts() {
                   </p>
                 </div>
 
-                <div className="mt-4 flex gap-2">
+                <div className="mt-1">
+                  <h2 className="text-green-300">
+                    {product.stock > 0 ? `In Stock` : `Not Availble`}{" "}
+                  </h2>
+                </div>
+
+                <div className="mt-2 flex gap-2">
                   <CustomButton
                     type="button"
                     onClick={() => handleBuyNow(product._id)}

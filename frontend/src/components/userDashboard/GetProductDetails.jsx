@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getProductById } from "../../slice/productSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { addToCart, getProductById } from "../../slice/productSlice";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { product, loading, error } = useSelector((state) => state.product);
 
   useEffect(() => {
     dispatch(getProductById(id));
   }, [dispatch, id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (!product) {
     return <div>No product found.</div>;
@@ -33,6 +28,16 @@ const ProductDetails = () => {
   const prevImage = () => {
     setCurrentImage((prev) => (prev - 1 + totalImages) % totalImages);
   };
+
+  const handleAddToCart = async(id) => {
+   try {
+     await dispatch(addToCart({productId: id, quantity}))
+     toast.success("Added to cart");
+     navigate("/cart");
+   } catch (error) {
+    toast.error("Failed to add to cart");
+   }
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -87,12 +92,28 @@ const ProductDetails = () => {
             <span className="font-semibold">Category:</span> {product.category}
           </p>
           <p>
-            <span className="font-semibold">Stock:</span>{" "}
+            <span className="font-semibold">Stock Available:</span>{" "}
             {product.stock > 0 ? product.stock : "Out of stock"}
           </p>
         </div>
 
+        <div>
+          <label className="block font-semibold mt-3">Quantity</label>
+          <select
+            className="border w-full p-2 rounded-md bg-gray-600"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          >
+            {[1, 2, 3, 4, 5].map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <button
+        onClick={()=> handleAddToCart(product._id)}
           disabled={product.stock === 0}
           className={`mt-4 px-6 py-3 text-white rounded-lg ${
             product.stock > 0

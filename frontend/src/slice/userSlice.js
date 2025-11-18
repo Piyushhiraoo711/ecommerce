@@ -78,6 +78,26 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// -------------------- UPDATE USER --------------------
+export const updatedUser = createAsyncThunk(
+  "auth/updatedUser",
+  async ({ userId, updatedData }, { rejectWithValue }) => {
+    try {
+      console.log(userId, updatedData)
+      const response = await axios.put(
+        `${USER_API_END_POINT}/${userId}`,
+        updatedData,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update user"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -142,6 +162,21 @@ const authSlice = createSlice({
         state.user = action.payload.user;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // --------------- UPDATE --------------
+      .addCase(updatedUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatedUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.error = null;
+      })
+      .addCase(updatedUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
