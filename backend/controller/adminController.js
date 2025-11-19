@@ -4,12 +4,15 @@ import User from "../model/userModel.js";
 
 export const getAdminDashboard = async (req, res) => {
   try {
+    // ---------- BASIC COUNTS ----------
     const totalUsers = await User.countDocuments({ role: "user" });
     const totalSellers = await User.countDocuments({ role: "seller" });
     const totalProducts = await Product.countDocuments();
     const totalOrders = await Order.countDocuments();
+
     const users = await User.find({ role: "user" });
     const sellers = await User.find({ role: "seller" });
+
     const products = await Product.find().populate("createdBy");
 
     const orders = await Order.find()
@@ -20,35 +23,50 @@ export const getAdminDashboard = async (req, res) => {
         populate: { path: "createdBy", model: "Users" },
       });
 
-    /// top users
-    // const userOrdersMap = {};
+    // SAFETY: Remove any corrupted order objects
+    const safeOrders = orders.filter(
+      (o) => o && o.products && Array.isArray(o.products)
+    );
 
-    // orders.forEach((order) => {
-    //   const userId = order.user._id.toString();
-    //   if (!userOrdersMap[userId]) {
-    //     userOrdersMap[userId] = { user: order.user, orders: 0 };
-    //   }
-    //   userOrdersMap[userId].orders += 1;
-    // });
+    // =======================================================
+    // 1️⃣ TOP USERS
+    // =======================================================
+    const userOrdersMap = {};
 
-    // const topUsers = Object.values(userOrdersMap)
-    //   .sort((a, b) => b.orders - a.orders)
-    //   .slice(0, 5)
-    //   .map((item) => ({
-    //     name: `${item.user.firstName} ${item.user.lastName}`,
-    //     email: item.user.email,
-    //     orders: item.orders,
-    //   }));
+    safeOrders.forEach((order) => {
+      const userId = order?.user?._id?.toString();
+      if (!userId) return; // skip corrupted orders
 
-    // most sold
+      if (!userOrdersMap[userId]) {
+        userOrdersMap[userId] = { user: order.user, orders: 0 };
+      }
+      userOrdersMap[userId].orders += 1;
+    });
+
+    const topUsers = Object.values(userOrdersMap)
+      .sort((a, b) => b.orders - a.orders)
+      .slice(0, 5)
+      .map((item) => ({
+        name: `${item.user?.firstName ?? ""} ${item.user?.lastName ?? ""}`,
+        email: item.user?.email ?? "N/A",
+        orders: item.orders,
+      }));
+
+    // =======================================================
+    // 2️⃣ MOST SOLD PRODUCTS
+    // =======================================================
     const productSalesMap = {};
-    orders.forEach((order) => {
+
+    safeOrders.forEach((order) => {
       order.products.forEach((p) => {
-        const prodId = p.product._id.toString();
+        const prod = p?.product;
+        if (!prod?._id) return;
+
+        const prodId = prod._id.toString();
         if (!productSalesMap[prodId]) {
-          productSalesMap[prodId] = { product: p.product, sold: 0 };
+          productSalesMap[prodId] = { product: prod, sold: 0 };
         }
-        productSalesMap[prodId].sold += p.quantity;
+        productSalesMap[prodId].sold += p.quantity || 0;
       });
     });
 
@@ -56,22 +74,25 @@ export const getAdminDashboard = async (req, res) => {
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 5)
       .map((item) => ({
-        name: item.product.name,
+        name: item.product?.name ?? "Unknown",
         sold: item.sold,
       }));
 
-    // top seller
+    // =======================================================
+    // 3️⃣ TOP SELLERS
+    // =======================================================
     const sellerSalesMap = {};
-    orders.forEach((order) => {
+
+    safeOrders.forEach((order) => {
       order.products.forEach((p) => {
-        const sellerId = p.product.createdBy._id.toString();
+        const seller = p?.product?.createdBy;
+        if (!seller?._id) return;
+
+        const sellerId = seller._id.toString();
         if (!sellerSalesMap[sellerId]) {
-          sellerSalesMap[sellerId] = {
-            seller: p.product.createdBy,
-            sold: 0,
-          };
+          sellerSalesMap[sellerId] = { seller, sold: 0 };
         }
-        sellerSalesMap[sellerId].sold += p.quantity;
+        sellerSalesMap[sellerId].sold += p.quantity || 0;
       });
     });
 
@@ -79,21 +100,24 @@ export const getAdminDashboard = async (req, res) => {
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 5)
       .map((item) => ({
-        name: `${item.seller.firstName} ${item.seller.lastName}`,
-        email: item.seller.email,
+        name: `${item.seller?.firstName ?? ""} ${item.seller?.lastName ?? ""}`,
+        email: item.seller?.email ?? "N/A",
         sold: item.sold,
       }));
 
-    // most return proudct
+    // =======================================================
+    // 4️⃣ MOST RETURNED PRODUCTS
+    // =======================================================
     const returnedProductsMap = {};
-    orders.forEach((order) => {
+
+    safeOrders.forEach((order) => {
       order.products.forEach((p) => {
-        if (p.returnStatus === "returned") {
-          const prodId = p.product._id.toString();
-          if (!returnedProductsMap[prodId]) {
-            returnedProductsMap[prodId] = { product: p.product, returns: 0 };
+        if (p.returnStatus === "returned" && p?.product?._id) {
+          const id = p.product._id.toString();
+          if (!returnedProductsMap[id]) {
+            returnedProductsMap[id] = { product: p.product, returns: 0 };
           }
-          returnedProductsMap[prodId].returns += 1;
+          returnedProductsMap[id].returns += 1;
         }
       });
     });
@@ -102,20 +126,26 @@ export const getAdminDashboard = async (req, res) => {
       .sort((a, b) => b.returns - a.returns)
       .slice(0, 5)
       .map((item) => ({
-        name: item.product.name,
+        name: item.product?.name ?? "Unknown",
         returns: item.returns,
       }));
 
-    // seller revenue
+    // =======================================================
+    // 5️⃣ SELLER REVENUE
+    // =======================================================
     const sellerRevenueMap = {};
-    orders.forEach((order) => {
+
+    safeOrders.forEach((order) => {
       order.products.forEach((p) => {
-        const sellerId = p.product.createdBy._id.toString();
-        const revenue = p.quantity * p.product.price;
+        const seller = p?.product?.createdBy;
+        if (!seller?._id) return;
+
+        const sellerId = seller._id.toString();
+        const revenue = (p.quantity || 0) * (p.product?.price || 0);
 
         if (!sellerRevenueMap[sellerId]) {
           sellerRevenueMap[sellerId] = {
-            seller: p.product.createdBy,
+            seller,
             totalRevenue: 0,
             totalOrders: 0,
           };
@@ -129,87 +159,74 @@ export const getAdminDashboard = async (req, res) => {
     const revenuePerSeller = Object.values(sellerRevenueMap)
       .sort((a, b) => b.totalRevenue - a.totalRevenue)
       .map((item) => ({
-        sellerName: `${item.seller.firstName} ${item.seller.lastName}`,
-        email: item.seller.email,
+        sellerName: `${item.seller?.firstName ?? ""} ${item.seller?.lastName ?? ""}`,
+        email: item.seller?.email ?? "N/A",
         totalRevenue: item.totalRevenue,
         totalOrders: item.totalOrders,
       }));
 
-    // monthly revenue
+    // =======================================================
+    // 6️⃣ MONTHLY REVENUE
+    // =======================================================
     const monthlyRevenueMap = {};
-    orders.forEach((order) => {
-      if (order.status === "cancelled") return;
-      const orderMonth = order.orderDate.getMonth() + 1;
-      const orderYear = order.orderDate.getFullYear();
-      const key = `${orderYear}-${orderMonth}`;
+
+    safeOrders.forEach((order) => {
+      const orderDate = order?.orderDate;
+      if (!orderDate) return;
+
+      const month = orderDate.getMonth() + 1;
+      const year = orderDate.getFullYear();
+      const key = `${year}-${month}`;
 
       if (!monthlyRevenueMap[key]) {
         monthlyRevenueMap[key] = { totalRevenue: 0, ordersCount: 0 };
       }
 
       order.products.forEach((p) => {
-        const revenue = p.quantity * p.product.price;
-        monthlyRevenueMap[key].totalRevenue += revenue;
+        const rev = (p.quantity || 0) * (p.product?.price || 0);
+        monthlyRevenueMap[key].totalRevenue += rev;
         monthlyRevenueMap[key].ordersCount += 1;
       });
     });
 
-    const monthlyRevenue = Object.keys(monthlyRevenueMap)
+    const monthlyRevenue = Object.entries(monthlyRevenueMap)
       .sort()
-      .map((key) => {
+      .map(([key, val]) => {
         const [year, month] = key.split("-").map(Number);
-        return {
-          year,
-          month,
-          totalRevenue: monthlyRevenueMap[key].totalRevenue,
-          ordersCount: monthlyRevenueMap[key].ordersCount,
-        };
+        return { year, month, ...val };
       });
 
-    // Users perticuler
-    // const userDashboard = users.map((user) => {
-    //   const userOrders = orders.filter(
-    //     (o) => o.user._id.toString() === user._id.toString()
-    //   );
-    //   const totalOrders = userOrders.length;
-    //   const totalAmount = userOrders.reduce(
-    //     (sum, order) => sum + order.totalAmount,
-    //     0
-    //   );
-
-    //   return {
-    //     userId: user._id,
-    //     name: `${user.firstName} ${user.lastName}`,
-    //     email: user.email,
-    //     totalOrders,
-    //     totalAmount,
-    //   };
-    // });
-
-    // Sellers
+    // =======================================================
+    // 7️⃣ SELLER DASHBOARD (SAFE VERSION)
+    // =======================================================
     const sellerDashboard = sellers.map((seller) => {
+      const sellerId = seller?._id?.toString();
+      if (!sellerId) return null;
+
       const sellerProducts = products.filter(
-        (p) => p.createdBy._id.toString() === seller._id.toString()
+        (p) => p?.createdBy?._id?.toString() === sellerId
       );
-      const totalProducts = sellerProducts.length;
 
       let totalAmount = 0;
-      orders.forEach((order) => {
+
+      safeOrders.forEach((order) => {
         order.products.forEach((p) => {
-          if (p.product.createdBy._id.toString() === seller._id.toString()) {
-            totalAmount += p.quantity * p.product.price;
+          if (p?.product?.createdBy?._id?.toString() === sellerId) {
+            totalAmount += (p.quantity || 0) * (p.product?.price || 0);
           }
         });
       });
 
       return {
-        sellerId: seller._id,
+        sellerId,
         name: `${seller.firstName} ${seller.lastName}`,
         email: seller.email,
-        totalProducts,
+        totalProducts: sellerProducts.length,
         totalAmount,
       };
-    });
+    }).filter(Boolean);
+
+    // =======================================================
 
     res.status(200).json({
       success: true,
@@ -226,18 +243,21 @@ export const getAdminDashboard = async (req, res) => {
         mostReturnedProducts,
         revenuePerSeller,
         monthlyRevenue,
-        // userDashboard,
         sellerDashboard,
       },
     });
+
   } catch (error) {
-    console.error(error);
+    console.error("💥 ADMIN DASHBOARD ERROR:", error);
+
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
+
 
 // delete user and seller
 export const deleteUser = async (req, res) => {

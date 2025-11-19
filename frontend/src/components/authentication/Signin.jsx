@@ -50,10 +50,10 @@ export default function Signin() {
 
       switch (userRole) {
         case "admin":
-          navigate("/admin");
+          navigate("/admin/dashboard");
           break;
         case "seller":
-          navigate("/seller");
+          navigate("/seller/dashboard");
           break;
         default:
           navigate("/");

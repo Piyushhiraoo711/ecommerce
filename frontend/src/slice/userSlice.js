@@ -5,7 +5,7 @@ import axios from "axios";
 // --------------------- USER LOAD ----------------------
 export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
   const res = await axios.get("/api/auth/me", { withCredentials: true });
-  return res.data.user;
+  return res.data;
 });
 
 // -------------------- REGISTER USER --------------------
@@ -105,7 +105,6 @@ const authSlice = createSlice({
     loading: false,
     error: null,
     otpPending: false,
-    isAuthenticated: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -115,8 +114,8 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.user = action.payload;
         state.loading = false;
+        state.user = action.payload.data;
       })
       .addCase(fetchUser.rejected, (state) => {
         state.user = null;

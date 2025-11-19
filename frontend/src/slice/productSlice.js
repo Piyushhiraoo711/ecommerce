@@ -104,8 +104,6 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ productId, quantity }, { rejectWithValue }) => {
     try {
-      console.log("Sending to API:", { productId, quantity });
-
       const { data } = await axios.post(
         `${CART_API_END_POINT}/add`,
         { productId, quantity },
@@ -114,8 +112,6 @@ export const addToCart = createAsyncThunk(
           withCredentials: true,
         }
       );
-
-      console.log("Response from API:", data);
       return data;
     } catch (err) {
       console.error("Add to cart error:", err.response || err);
@@ -279,7 +275,7 @@ const productSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = action.payload.cart;
+        state.cart = action.payload;
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;

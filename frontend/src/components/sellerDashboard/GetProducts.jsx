@@ -9,7 +9,7 @@ const GetProducts = () => {
 
   useEffect(() => {
    dispatch(fetchSellerProducts());
-  }, [])
+  }, [dispatch])
    
   return (
    <>

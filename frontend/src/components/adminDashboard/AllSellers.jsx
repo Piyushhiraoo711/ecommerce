@@ -1,28 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AllSellersCard from "../card/AllSellersCard.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { totalSellers } from "../../slice/adminSlice.js";
 
 const AllSellers = () => {
-  const users = [
-    {
-      userId: 1,
-      firstName: "John",
-      lastName: "Doe",
-      email: "mclkdjfkxs",
-      totalOrders: 15,
-      totalAmount: 12500,
-    },
-    {
-      userId: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      email: "asdfasdf",
-      totalOrders: 8,
-      totalAmount: 7600,
-    },
-  ];
+  const dispatch = useDispatch();
+  const { totalSeller } = useSelector((state) => state.admin);
+  useEffect(() => {
+    dispatch(totalSellers());
+  }, [dispatch]);
+
   return (
     <>
-      <AllSellersCard users={users} />
+      {
+        console.log("total seller", totalSeller)
+      }
+      {/* <AllSellersCard users={users} /> */}
     </>
   );
 };

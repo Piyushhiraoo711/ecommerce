@@ -6,6 +6,7 @@ import {
   deleteOrder,
   getAllMyOrders,
   getOrderById,
+  getSellerStats,
   getUsersOrders,
   updateOrderStatus,
 } from "../controller/orderController.js";
@@ -21,12 +22,16 @@ router.route("/my-orders").get(verifyToken , authorizeRoles("user"), getAllMyOrd
 
 router.route("/user-orders").get(verifyToken, authorizeRoles("seller", "admin"), getUsersOrders);
 
+router.route("/stats").get(verifyToken , authorizeRoles("seller"), getSellerStats);
+
 router.route("/:id").get(verifyToken, authorizeRoles("user", "seller", "admin"), getOrderById);
 
 router.route("/:id").put(verifyToken, authorizeRoles("seller", "admin"), updateOrderStatus);
 
 router.route("/:id").delete(verifyToken, authorizeRoles("seller", "admin"), deleteOrder);
 
-router.route("/cancel-order/:id").delete(verifyToken, authorizeRoles("user"), cancelOrder)
+router.route("/cancel-order/:id").delete(verifyToken, authorizeRoles("user"), cancelOrder);
+
+
 
 export default router;

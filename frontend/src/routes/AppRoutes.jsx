@@ -16,8 +16,7 @@ import GetProducts from "../components/sellerDashboard/GetProducts.jsx";
 import GetOrders from "../components/sellerDashboard/GetOrders.jsx";
 import UpdateProduct from "../components/sellerDashboard/UpdateProduct.jsx";
 import GetProductDetails from "../components/userDashboard/GetProductDetails.jsx";
-import DashboardAdmin from "../components/adminDashboard/DashboardAdmin.jsx";
-import DashboardSeller from "../components/sellerDashboard/DashboardSeller.jsx";
+import DashboardAdmin from "../components/adminDashboard/AdminLayout.jsx";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute.jsx";
 import { Route, Routes } from "react-router-dom";
 import MyProfile from "../components/userDashboard/MyProfile.jsx";
@@ -25,6 +24,12 @@ import UpdateProfile from "../components/userDashboard/UpdateProfile.jsx";
 import PlaceOrder from "../components/userDashboard/PlaceOrder.jsx";
 import MyOrders from "../components/userDashboard/MyOrders.jsx";
 import Cart from "../components/userDashboard/Cart.jsx";
+import SellerLayout from "../components/sellerDashboard/SellerLayout.jsx";
+import AdminLayout from "../components/adminDashboard/AdminLayout.jsx";
+import TopUsers from "../components/adminDashboard/TopUsers.jsx";
+import TopSellers from "../components/adminDashboard/TopSellers.jsx";
+import TopProducts from "../components/adminDashboard/TopProducts.jsx";
+import OrderByStatus from "../components/adminDashboard/OrderByStatus.jsx";
 
 const AppRoutes = () => {
   return (
@@ -42,107 +47,44 @@ const AppRoutes = () => {
       <Route path="/update-profile" element={<UpdateProfile />} />
       <Route path="/place-order/:id" element={<PlaceOrder />} />
       <Route path="/my-orders" element={<MyOrders />} />
-      <Route path="/cart" element={<Cart/>}/>
+      <Route path="/cart" element={<Cart />} />
 
       {/* Seller Routes (Protected) */}
       <Route
         path="/seller"
         element={
           <ProtectedRoute allowedRoles={["seller"]}>
-            <DashboardSeller />
+            <SellerLayout />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/seller/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["seller"]}>
-            <SellerDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/seller/create-product"
-        element={
-          <ProtectedRoute allowedRoles={["seller"]}>
-            <CreateProduct />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/seller/get-products"
-        element={
-          <ProtectedRoute allowedRoles={["seller"]}>
-            <GetProducts />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/seller/get-orders"
-        element={
-          <ProtectedRoute allowedRoles={["seller"]}>
-            <GetOrders />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/seller/update-product/:id"
-        element={
-          <ProtectedRoute allowedRoles={["seller"]}>
-            <UpdateProduct />
-          </ProtectedRoute>
-        }
-      />
+      >
+        <Route path="dashboard" element={<SellerDashboard />} />
+        <Route path="create-product" element={<CreateProduct />} />
+        <Route path="get-products" element={<GetProducts />} />
+        <Route path="get-orders" element={<GetOrders />} />
+        <Route path="update-product/:id" element={<UpdateProduct />} />
+      </Route>
 
       {/* Admin Routes (Protected) */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute allowedRoles={["admin"]}>
-            <DashboardAdmin />
+            <AdminLayout />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/admin/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/all-user"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AllUsers />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/all-seller"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AllSellers />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/all-products"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AllProducts />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/all-orders"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AllOrders />
-          </ProtectedRoute>
-        }
-      />
+      >
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="all-user" element={<AllUsers />} />
+        <Route path="all-seller" element={<AllSellers />} />
+        <Route path="all-products" element={<AllProducts />} />
+        <Route path="all-orders" element={<AllOrders />} />
+
+        <Route path="top-users" element={<TopUsers />} />
+        <Route path="top-sellers" element={<TopSellers />} />
+        <Route path="top-products" element={<TopProducts />} />
+        <Route path="order-by-status" element={<OrderByStatus />} />
+      </Route>
     </Routes>
   );
 };

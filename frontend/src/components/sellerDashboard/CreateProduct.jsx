@@ -96,7 +96,7 @@ const handleSubmit = async (e) => {
       <div>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} method="POST" className="space-y-6">
-            <div>
+            <div className="text-[15px] text-center">
               <h1>Create Product</h1>
             </div>
             <CustomInput

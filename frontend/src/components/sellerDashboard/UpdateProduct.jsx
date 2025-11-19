@@ -58,7 +58,7 @@ const UpdateProduct = () => {
       );
       if (res.meta.requestStatus === "fulfilled") {
         toast.success("Product updated successfully!");
-        navigate("/seller");
+        navigate("/seller/dashboard");
       } else {
         toast.error(res.payload || "Failed to update product");
       }
@@ -79,7 +79,7 @@ const UpdateProduct = () => {
     <div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleSubmit} method="POST" className="space-y-6">
-          <div>
+          <div className="text-[15px] text-center">
             <h1>Update Product</h1>
           </div>
           <CustomInput

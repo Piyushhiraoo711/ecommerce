@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { myOrder } from "../../slice/orderSlice";
+import { cancelOrder, myOrder } from "../../slice/orderSlice";
+import toast from "react-hot-toast";
 
 const MyOrders = () => {
   const dispatch = useDispatch();
@@ -10,8 +11,14 @@ const MyOrders = () => {
     dispatch(myOrder());
   }, [dispatch]);
 
-  const handleCancelOrder = (orderId) => {
+  const handleCancelOrder = async(orderId) => {
     console.log("Cancel order:", orderId);
+   try {
+    const result = await dispatch(cancelOrder(orderId)).unwrap();
+    toast.success(result.message || "Order cancelled successfully");
+  } catch (error) {
+    toast.error(error || "Failed to cancel order");
+  }
   };
 
   return (
