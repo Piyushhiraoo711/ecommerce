@@ -39,7 +39,7 @@ function isValidElementType(type) {
 }
 function typeOf(object) {
   if (typeof object === "object" && object !== null) {
-    const { $$typeof } = object;
+    const {$$typeof } = object;
     switch ($$typeof) {
       case REACT_ELEMENT_TYPE:
         switch (object = object.type, object) {
@@ -59,11 +59,11 @@ function typeOf(object) {
               case REACT_CONSUMER_TYPE:
                 return object;
               default:
-                return $$typeof;
+                return$$typeof;
             }
         }
       case REACT_PORTAL_TYPE:
-        return $$typeof;
+        return$$typeof;
     }
   }
 }
@@ -84,11 +84,11 @@ function warning(message) {
 }
 function verify(selector, methodName) {
   if (!selector) {
-    throw new Error(`Unexpected value for ${methodName} in connect.`);
+    throw new Error(`Unexpected value for${methodName} in connect.`);
   } else if (methodName === "mapStateToProps" || methodName === "mapDispatchToProps") {
     if (!Object.prototype.hasOwnProperty.call(selector, "dependsOnOwnProps")) {
       warning(
-        `The selector for ${methodName} of connect did not specify a value for dependsOnOwnProps.`
+        `The selector for${methodName} of connect did not specify a value for dependsOnOwnProps.`
       );
     }
   }
@@ -197,7 +197,7 @@ function isPlainObject(obj) {
 function verifyPlainObject(value, displayName, methodName) {
   if (!isPlainObject(value)) {
     warning(
-      `${methodName}() in ${displayName} must return a plain object. Instead received ${value}.`
+      `${methodName}() in${displayName} must return a plain object. Instead received${value}.`
     );
   }
 }
@@ -239,7 +239,7 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
 function createInvalidArgFactory(arg, name) {
   return (dispatch, options) => {
     throw new Error(
-      `Invalid value of type ${typeof arg} for ${name} argument when connecting component ${options.wrappedComponentName}.`
+      `Invalid value of type${typeof arg} for${name} argument when connecting component${options.wrappedComponentName}.`
     );
   };
 }
@@ -468,14 +468,14 @@ var KNOWN_STATICS = {
   arity: true
 };
 var FORWARD_REF_STATICS = {
-  $$typeof: true,
+ $$typeof: true,
   render: true,
   defaultProps: true,
   displayName: true,
   propTypes: true
 };
 var MEMO_STATICS = {
-  $$typeof: true,
+ $$typeof: true,
   compare: true,
   defaultProps: true,
   displayName: true,
@@ -647,7 +647,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       const isValid = isValidElementType(WrappedComponent);
       if (!isValid)
         throw new Error(
-          `You must pass a component to the function returned by connect. Instead received ${stringifyComponent(
+          `You must pass a component to the function returned by connect. Instead received${stringifyComponent(
             WrappedComponent
           )}`
         );
@@ -696,7 +696,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       const didStoreComeFromContext = Boolean(contextValue) && Boolean(contextValue.store);
       if (!didStoreComeFromProps && !didStoreComeFromContext) {
         throw new Error(
-          `Could not find "store" in the context of "${displayName}". Either wrap the root component in a <Provider>, or pass a custom React context provider to <Provider> and the corresponding React context consumer to ${displayName} in connect options.`
+          `Could not find "store" in the context of "${displayName}". Either wrap the root component in a <Provider>, or pass a custom React context provider to <Provider> and the corresponding React context consumer to${displayName} in connect options.`
         );
       }
       const store = didStoreComeFromProps ? props.store : contextValue.store;

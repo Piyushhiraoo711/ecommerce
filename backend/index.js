@@ -39,5 +39,5 @@ app.use("/cart", cartRoutes);
 
 app.listen(PORT, () => {
   connectDB();
-  console.log(`server is running on PORT ${PORT}`);
+  console.log(`server is running on PORT${PORT}`);
 });

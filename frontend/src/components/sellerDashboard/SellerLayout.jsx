@@ -22,6 +22,7 @@ const SellerLayout = () => {
     { id: "create-product", label: "Add Product", icon: <PlusSquare /> },
     { id: "get-products", label: "My Products", icon: <Package /> },
     { id: "get-orders", label: "My Orders", icon: <ShoppingCart /> },
+    { id: "my-profile", label: "My Profile", icon: <User /> },
     { id: "logout", label: "Logout", icon: <LogOut /> },
   ];
   const handleMenuClick = (id) => {
@@ -49,7 +50,7 @@ const SellerLayout = () => {
                 key={item.id}
                 onClick={() => handleMenuClick(item.id)}
                 className={`flex items-center gap-3 w-full p-3 rounded-xl 
-                ${
+               ${
                   activePage === item.id
                     ? "bg-blue-400 text-white"
                     : "hover:bg-indigo-200"

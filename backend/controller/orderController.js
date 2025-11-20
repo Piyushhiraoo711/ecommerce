@@ -19,14 +19,14 @@ export const createOrder = async (req, res) => {
       if (!productData) {
         return res.status(404).json({
           success: false,
-          message: `Product not found ${item.product}`,
+          message: `Product not found${item.product}`,
         });
       }
 
       if (productData.stock < item.quantity) {
         return res.status(400).json({
           success: false,
-          message: `Product are limited to stock for ${productData.name}, only ${productData.quantity} are available`,
+          message: `Product are limited to stock for${productData.name}, only${productData.quantity} are available`,
         });
       }
       totalAmount += productData.price * item.quantity;
@@ -109,7 +109,7 @@ export const getUsersOrders = async (req, res) => {
 
     
     const orders = await Order.find({
-      "products.product": { $in: productIds },
+      "products.product": {$in: productIds },
     })
       .populate("user", "firstName lastName email")
       .populate("products.product", "name price category images");
@@ -389,7 +389,7 @@ export const getSellerStats = async (req, res) => {
     }
 
     const orders = await Order.find({
-      "products.product": { $in: productIds },
+      "products.product": {$in: productIds },
     })
       .populate("user", "_id firstName lastName email")
       .populate("products.product", "_id price name")

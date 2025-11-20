@@ -66,7 +66,7 @@
 //               <Link
 //                 key={link.name}
 //                 to={link.path}
-//                 className={`flex items-center px-6 py-3 hover:bg-gray-700 ${
+//                 className={`flex items-center px-6 py-3 hover:bg-gray-700${
 //                   location.pathname.includes(link.path) ? "bg-gray-700" : ""
 //                 }`}
 //               >

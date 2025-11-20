@@ -24,7 +24,7 @@ const mailTextContent = (username, otp) => {
                     <img src="${logoUrl}" alt="${companyName} logo" width="120" style="display:block;border:0;outline:none;text-decoration:none;">
                   </td>
                   <td align="right" style="vertical-align:middle;font-size:14px;color:rgba(255,255,255,0.95);">
-                    <strong>Welcome, ${username}!</strong>
+                    <strong>Welcome,${username}!</strong>
                   </td>
                 </tr>
               </table>
@@ -34,9 +34,9 @@ const mailTextContent = (username, otp) => {
           <!-- Body -->
           <tr>
             <td style="padding:28px 28px 8px 28px;color:#111827;">
-              <h1 style="margin:0 0 12px 0;font-size:20px;line-height:1.2;color:#0f1724;font-weight:600;">Thanks for joining ${companyName} 🎉</h1>
+              <h1 style="margin:0 0 12px 0;font-size:20px;line-height:1.2;color:#0f1724;font-weight:600;">Thanks for joining${companyName} 🎉</h1>
               <p style="margin:0 0 16px 0;color:#475569;font-size:15px;line-height:1.5;">
-                Hi ${username}, verify user account with OTP : ${otp} 
+                Hi${username}, verify user account with OTP :${otp} 
               </p>
 
               <hr style="border:none;border-top:1px solid #eef2f7;margin:20px 0;">
@@ -55,7 +55,7 @@ const mailTextContent = (username, otp) => {
                   <td style="font-size:13px;color:#64748b;">
                     <strong>${companyName}</strong><br>
                     A company that’s just getting started.<br>
-                    <span style="font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} ${companyName}. All rights reserved.</span>
+                    <span style="font-size:12px;color:#94a3b8;">©${new Date().getFullYear()}${companyName}. All rights reserved.</span>
                   </td>
                 </tr>
               </table>

@@ -29,7 +29,7 @@ const CustomSelect = ({
           required={required}
           className={`block w-full rounded-md px-3 py-1.5 text-base bg-black text-white outline outline-1 outline-gray-300 placeholder:text-gray-400 
             focus:outline-2 focus:outline-indigo-600 sm:text-sm 
-             dark:focus:outline-indigo-500 ${className}`}
+             dark:focus:outline-indigo-500${className}`}
         >
           <option value="">{placeholder}</option>
           {options.map((opt) => (

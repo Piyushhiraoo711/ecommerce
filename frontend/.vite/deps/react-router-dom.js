@@ -76,36 +76,36 @@ var require_dist = __commonJS({
     function serialize2(name, val, options) {
       const enc = options?.encode || encodeURIComponent;
       if (!cookieNameRegExp.test(name)) {
-        throw new TypeError(`argument name is invalid: ${name}`);
+        throw new TypeError(`argument name is invalid:${name}`);
       }
       const value = enc(val);
       if (!cookieValueRegExp.test(value)) {
-        throw new TypeError(`argument val is invalid: ${val}`);
+        throw new TypeError(`argument val is invalid:${val}`);
       }
       let str = name + "=" + value;
       if (!options)
         return str;
       if (options.maxAge !== void 0) {
         if (!Number.isInteger(options.maxAge)) {
-          throw new TypeError(`option maxAge is invalid: ${options.maxAge}`);
+          throw new TypeError(`option maxAge is invalid:${options.maxAge}`);
         }
         str += "; Max-Age=" + options.maxAge;
       }
       if (options.domain) {
         if (!domainValueRegExp.test(options.domain)) {
-          throw new TypeError(`option domain is invalid: ${options.domain}`);
+          throw new TypeError(`option domain is invalid:${options.domain}`);
         }
         str += "; Domain=" + options.domain;
       }
       if (options.path) {
         if (!pathValueRegExp.test(options.path)) {
-          throw new TypeError(`option path is invalid: ${options.path}`);
+          throw new TypeError(`option path is invalid:${options.path}`);
         }
         str += "; Path=" + options.path;
       }
       if (options.expires) {
         if (!isDate(options.expires) || !Number.isFinite(options.expires.valueOf())) {
-          throw new TypeError(`option expires is invalid: ${options.expires}`);
+          throw new TypeError(`option expires is invalid:${options.expires}`);
         }
         str += "; Expires=" + options.expires.toUTCString();
       }
@@ -131,7 +131,7 @@ var require_dist = __commonJS({
             str += "; Priority=High";
             break;
           default:
-            throw new TypeError(`option priority is invalid: ${options.priority}`);
+            throw new TypeError(`option priority is invalid:${options.priority}`);
         }
       }
       if (options.sameSite) {
@@ -148,7 +148,7 @@ var require_dist = __commonJS({
             str += "; SameSite=None";
             break;
           default:
-            throw new TypeError(`option sameSite is invalid: ${options.sameSite}`);
+            throw new TypeError(`option sameSite is invalid:${options.sameSite}`);
         }
       }
       return str;
@@ -406,7 +406,7 @@ function createMemoryHistory(options = {}) {
     );
     warning(
       location2.pathname.charAt(0) === "/",
-      `relative pathnames are not supported in memory history: ${JSON.stringify(
+      `relative pathnames are not supported in memory history:${JSON.stringify(
         to
       )}`
     );
@@ -707,7 +707,7 @@ function createBrowserURLImpl(to, isAbsolute = false) {
   }
   invariant(base, "No window.location.(origin|href) available to create URL");
   let href2 = typeof to === "string" ? to : createPath(to);
-  href2 = href2.replace(/ $/, "%20");
+  href2 = href2.replace(/$/, "%20");
   if (!isAbsolute && href2.startsWith("//")) {
     href2 = base + href2;
   }
@@ -3130,7 +3130,7 @@ function createRouter(init) {
     let updatedFetchers = false;
     for (let key of fetchRedirectIds) {
       let fetcher = state.fetchers.get(key);
-      invariant(fetcher, `Expected fetcher: ${key}`);
+      invariant(fetcher, `Expected fetcher:${key}`);
       if (fetcher.state === "loading") {
         fetchRedirectIds.delete(key);
         doneKeys.push(key);
@@ -3145,7 +3145,7 @@ function createRouter(init) {
     for (let [key, id] of fetchReloadIds) {
       if (id < landedId) {
         let fetcher = state.fetchers.get(key);
-        invariant(fetcher, `Expected fetcher: ${key}`);
+        invariant(fetcher, `Expected fetcher:${key}`);
         if (fetcher.state === "loading") {
           abortFetcher(key);
           fetchReloadIds.delete(key);
@@ -3171,7 +3171,7 @@ function createRouter(init) {
     let blocker = state.blockers.get(key) || IDLE_BLOCKER;
     invariant(
       blocker.state === "unblocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "proceeding" || blocker.state === "blocked" && newBlocker.state === "unblocked" || blocker.state === "proceeding" && newBlocker.state === "unblocked",
-      `Invalid blocker state transition: ${blocker.state} -> ${newBlocker.state}`
+      `Invalid blocker state transition:${blocker.state} ->${newBlocker.state}`
     );
     let blockers = new Map(state.blockers);
     blockers.set(key, newBlocker);
@@ -4031,7 +4031,7 @@ function throwStaticHandlerAbortedError(request, isRouteRequest) {
   }
   let method = isRouteRequest ? "queryRoute" : "query";
   throw new Error(
-    `${method}() call aborted without an \`AbortSignal.reason\`: ${request.method} ${request.url}`
+    `${method}() call aborted without an \`AbortSignal.reason\`:${request.method}${request.url}`
   );
 }
 function isSubmissionNavigation(opts) {
@@ -4406,7 +4406,7 @@ function patchRoutesImpl(routeId, children, routesToUse, manifest, mapRoutePrope
     let route = manifest[routeId];
     invariant(
       route,
-      `No route found to patch children into: routeId = ${routeId}`
+      `No route found to patch children into: routeId =${routeId}`
     );
     if (!route.children) {
       route.children = [];
@@ -4732,7 +4732,7 @@ async function runMiddlewarePipeline(args, handler, processResult, isResult, err
 async function callRouteMiddleware(args, middlewares, handler, processResult, isResult, errorHandler, idx = 0) {
   let { request } = args;
   if (request.signal.aborted) {
-    throw request.signal.reason ?? new Error(`Request aborted: ${request.method} ${request.url}`);
+    throw request.signal.reason ?? new Error(`Request aborted:${request.method}${request.url}`);
   }
   let tuple = middlewares[idx];
   if (!tuple) {
@@ -4942,7 +4942,7 @@ async function callLoaderOrAction({
       if (typeof handler !== "function") {
         return Promise.reject(
           new Error(
-            `You cannot call the handler for a route which defines a boolean "${type}" [routeId: ${match.route.id}]`
+            `You cannot call the handler for a route which defines a boolean "${type}" [routeId:${match.route.id}]`
           )
         );
       }
@@ -5311,7 +5311,7 @@ function getInternalRouterError(status, {
   if (status === 400) {
     statusText = "Bad Request";
     if (method && pathname && routeId) {
-      errorMessage = `You made a ${method} request to "${pathname}" but did not provide a \`loader\` for route "${routeId}", so there is no way to handle the request.`;
+      errorMessage = `You made a${method} request to "${pathname}" but did not provide a \`loader\` for route "${routeId}", so there is no way to handle the request.`;
     } else if (type === "invalid-body") {
       errorMessage = "Unable to encode submission body";
     }
@@ -5324,7 +5324,7 @@ function getInternalRouterError(status, {
   } else if (status === 405) {
     statusText = "Method Not Allowed";
     if (method && pathname && routeId) {
-      errorMessage = `You made a ${method.toUpperCase()} request to "${pathname}" but did not provide an \`action\` for route "${routeId}", so there is no way to handle the request.`;
+      errorMessage = `You made a${method.toUpperCase()} request to "${pathname}" but did not provide an \`action\` for route "${routeId}", so there is no way to handle the request.`;
     } else if (method) {
       errorMessage = `Invalid request method "${method.toUpperCase()}"`;
     }
@@ -5888,7 +5888,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
 }
 function DefaultErrorComponent() {
   let error = useRouteError();
-  let message = isRouteErrorResponse(error) ? `${error.status} ${error.statusText}` : error instanceof Error ? error.message : JSON.stringify(error);
+  let message = isRouteErrorResponse(error) ? `${error.status}${error.statusText}` : error instanceof Error ? error.message : JSON.stringify(error);
   let stack = error instanceof Error ? error.stack : null;
   let lightgrey = "rgba(200,200,200, 0.5)";
   let preStyles = { padding: "0.5rem", backgroundColor: lightgrey };
@@ -5978,7 +5978,7 @@ function _renderMatches(matches, parentMatches = [], dataRouterState = null, uns
     );
     invariant(
       errorIndex >= 0,
-      `Could not find a matching route for errors on route IDs: ${Object.keys(
+      `Could not find a matching route for errors on route IDs:${Object.keys(
         errors
       ).join(",")}`
     );
@@ -7548,7 +7548,7 @@ async function decodeDeferred(reader) {
         const deferredId = Number(line.slice(1, colonIndex));
         const deferred = this.deferred[deferredId];
         if (!deferred) {
-          throw new Error(`Deferred ID ${deferredId} not found in stream`);
+          throw new Error(`Deferred ID${deferredId} not found in stream`);
         }
         const lineData = line.slice(colonIndex + 1);
         let jsonLine;
@@ -7566,7 +7566,7 @@ async function decodeDeferred(reader) {
         const deferredId = Number(line.slice(1, colonIndex));
         const deferred = this.deferred[deferredId];
         if (!deferred) {
-          throw new Error(`Deferred ID ${deferredId} not found in stream`);
+          throw new Error(`Deferred ID${deferredId} not found in stream`);
         }
         const lineData = line.slice(colonIndex + 1);
         let jsonLine;
@@ -8551,14 +8551,14 @@ function createClientRoutesWithHMRRevalidationOptOut(needsRevalidation, manifest
 function preventInvalidServerHandlerCall(type, route) {
   if (type === "loader" && !route.hasLoader || type === "action" && !route.hasAction) {
     let fn = type === "action" ? "serverAction()" : "serverLoader()";
-    let msg = `You are trying to call ${fn} on a route that does not have a server ${type} (routeId: "${route.id}")`;
+    let msg = `You are trying to call${fn} on a route that does not have a server${type} (routeId: "${route.id}")`;
     console.error(msg);
     throw new ErrorResponseImpl(400, "Bad Request", new Error(msg), true);
   }
 }
 function noActionDefinedError(type, routeId) {
   let article = type === "clientAction" ? "a" : "an";
-  let msg = `Route "${routeId}" does not have ${article} ${type}, but you are trying to submit to it. To fix this, please add ${article} \`${type}\` function to the route`;
+  let msg = `Route "${routeId}" does not have${article}${type}, but you are trying to submit to it. To fix this, please add${article} \`${type}\` function to the route`;
   console.error(msg);
   throw new ErrorResponseImpl(405, "Method Not Allowed", new Error(msg), true);
 }
@@ -9001,7 +9001,7 @@ async function fetchAndApplyManifestPatches(paths, errorReloadPath, manifest, ro
   try {
     let res = await fetch(url, { signal });
     if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}`);
+      throw new Error(`${res.status}${res.statusText}`);
     } else if (res.status === 204 && res.headers.has("X-Remix-Reload-Document")) {
       if (!errorReloadPath) {
         console.warn(
@@ -9376,7 +9376,7 @@ function Meta() {
       let { tagName, ...rest } = metaProps;
       if (!isValidMetaTag(tagName)) {
         console.warn(
-          `A meta object uses an invalid tagName: ${tagName}. Expected either 'link' or 'meta'`
+          `A meta object uses an invalid tagName:${tagName}. Expected either 'link' or 'meta'`
         );
         return null;
       }
@@ -9443,12 +9443,12 @@ function Scripts(scriptProps) {
       return null;
     }
     let streamScript = "window.__reactRouterContext.stream = new ReadableStream({start(controller){window.__reactRouterContext.streamController = controller;}}).pipeThrough(new TextEncoderStream());";
-    let contextScript = staticContext ? `window.__reactRouterContext = ${serverHandoffString};${streamScript}` : " ";
-    let routeModulesScript = !isStatic ? " " : `${manifest.hmr?.runtime ? `import ${JSON.stringify(manifest.hmr.runtime)};` : ""}${!enableFogOfWar ? `import ${JSON.stringify(manifest.url)}` : ""};
+    let contextScript = staticContext ? `window.__reactRouterContext =${serverHandoffString};${streamScript}` : " ";
+    let routeModulesScript = !isStatic ? " " : `${manifest.hmr?.runtime ? `import${JSON.stringify(manifest.hmr.runtime)};` : ""}${!enableFogOfWar ? `import${JSON.stringify(manifest.url)}` : ""};
 ${matches.map((match, routeIndex) => {
       let routeVarName = `route${routeIndex}`;
       let manifestEntry = manifest.routes[match.route.id];
-      invariant2(manifestEntry, `Route ${match.route.id} not found in manifest`);
+      invariant2(manifestEntry, `Route${match.route.id} not found in manifest`);
       let {
         clientActionModule,
         clientLoaderModule,
@@ -9484,15 +9484,15 @@ ${matches.map((match, routeIndex) => {
         { module, varName: `${routeVarName}_main` }
       ];
       if (chunks.length === 1) {
-        return `import * as ${routeVarName} from ${JSON.stringify(module)};`;
+        return `import * as${routeVarName} from${JSON.stringify(module)};`;
       }
-      let chunkImportsSnippet = chunks.map((chunk) => `import * as ${chunk.varName} from "${chunk.module}";`).join("\n");
-      let mergedChunksSnippet = `const ${routeVarName} = {${chunks.map((chunk) => `...${chunk.varName}`).join(",")}};`;
+      let chunkImportsSnippet = chunks.map((chunk) => `import * as${chunk.varName} from "${chunk.module}";`).join("\n");
+      let mergedChunksSnippet = `const${routeVarName} = {${chunks.map((chunk) => `...${chunk.varName}`).join(",")}};`;
       return [chunkImportsSnippet, mergedChunksSnippet].join("\n");
     }).join("\n")}
-  ${enableFogOfWar ? (
+ ${enableFogOfWar ? (
       // Inline a minimal manifest with the SSR matches
-      `window.__reactRouterManifest = ${JSON.stringify(
+      `window.__reactRouterManifest =${JSON.stringify(
         getPartialManifest(manifest, router2),
         null,
         2
@@ -10104,7 +10104,7 @@ function ScrollRestoration({
       dangerouslySetInnerHTML: {
         __html: `(${restoreScroll})(${JSON.stringify(
           storageKey || SCROLL_RESTORATION_STORAGE_KEY
-        )}, ${JSON.stringify(ssrKey)})`
+        )},${JSON.stringify(ssrKey)})`
       }
     }
   );
@@ -10778,7 +10778,7 @@ function createHref(to) {
 }
 function encodeLocation(to) {
   let href2 = typeof to === "string" ? to : createPath(to);
-  href2 = href2.replace(/ $/, "%20");
+  href2 = href2.replace(/$/, "%20");
   let encoded = ABSOLUTE_URL_REGEX3.test(href2) ? new URL(href2) : new URL(href2, "http://localhost");
   return {
     pathname: encoded.pathname,

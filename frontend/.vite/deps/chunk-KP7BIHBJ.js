@@ -28,7 +28,7 @@ var require_react_dom_development = __commonJS({
           "function" === typeof Symbol && Symbol.toStringTag && key[Symbol.toStringTag] || key.constructor.name || "Object"
         ), testStringCoercion(key));
         return {
-          $$typeof: REACT_PORTAL_TYPE,
+         $$typeof: REACT_PORTAL_TYPE,
           key: null == key ? null : "" + key,
           children,
           containerInfo,

@@ -268,23 +268,23 @@ var C = w("div")`
   opacity: 0;
   height: 20px;
   border-radius: 10px;
-  background: ${(e2) => e2.primary || "#ff4b4b"};
+  background:${(e2) => e2.primary || "#ff4b4b"};
   position: relative;
   transform: rotate(45deg);
 
-  animation: ${de} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation:${de} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
   animation-delay: 100ms;
 
   &:after,
   &:before {
     content: '';
-    animation: ${me} 0.15s ease-out forwards;
+    animation:${me} 0.15s ease-out forwards;
     animation-delay: 150ms;
     position: absolute;
     border-radius: 3px;
     opacity: 0;
-    background: ${(e2) => e2.secondary || "#fff"};
+    background:${(e2) => e2.secondary || "#fff"};
     bottom: 9px;
     left: 4px;
     height: 2px;
@@ -292,7 +292,7 @@ var C = w("div")`
   }
 
   &:before {
-    animation: ${le} 0.15s ease-out forwards;
+    animation:${le} 0.15s ease-out forwards;
     animation-delay: 180ms;
     transform: rotate(90deg);
   }
@@ -311,9 +311,9 @@ var F = w("div")`
   box-sizing: border-box;
   border: 2px solid;
   border-radius: 100%;
-  border-color: ${(e2) => e2.secondary || "#e0e0e0"};
-  border-right-color: ${(e2) => e2.primary || "#616161"};
-  animation: ${Te} 1s linear infinite;
+  border-color:${(e2) => e2.secondary || "#e0e0e0"};
+  border-right-color:${(e2) => e2.primary || "#616161"};
+  animation:${Te} 1s linear infinite;
 `;
 var ge = h`
 from {
@@ -344,23 +344,23 @@ var L = w("div")`
   opacity: 0;
   height: 20px;
   border-radius: 10px;
-  background: ${(e2) => e2.primary || "#61d345"};
+  background:${(e2) => e2.primary || "#61d345"};
   position: relative;
   transform: rotate(45deg);
 
-  animation: ${ge} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation:${ge} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
   animation-delay: 100ms;
   &:after {
     content: '';
     box-sizing: border-box;
-    animation: ${he} 0.2s ease-out forwards;
+    animation:${he} 0.2s ease-out forwards;
     opacity: 0;
     animation-delay: 200ms;
     position: absolute;
     border-right: 2px solid;
     border-bottom: 2px solid;
-    border-color: ${(e2) => e2.secondary || "#fff"};
+    border-color:${(e2) => e2.secondary || "#fff"};
     bottom: 6px;
     left: 6px;
     height: 10px;
@@ -392,10 +392,10 @@ var Pe = w("div")`
   transform: scale(0.6);
   opacity: 0.4;
   min-width: 20px;
-  animation: ${Ae} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  animation:${Ae} 0.3s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
 `;
-var $ = ({ toast: e2 }) => {
+var$ = ({ toast: e2 }) => {
   let { icon: t2, type: o2, iconTheme: s2 } = e2;
   return t2 !== void 0 ? typeof t2 == "string" ? b2.createElement(Pe, null, t2) : t2 : o2 === "blank" ? null : b2.createElement(Se, null, b2.createElement(F, { ...s2 }), o2 !== "loading" && b2.createElement(be, null, o2 === "error" ? b2.createElement(C, { ...s2 }) : b2.createElement(L, { ...s2 })));
 };
@@ -475,7 +475,7 @@ export {
   C as ErrorIcon,
   F as LoaderIcon,
   N as ToastBar,
-  $ as ToastIcon,
+ $ as ToastIcon,
   Fe as Toaster,
   zt as default,
   h2 as resolveValue,

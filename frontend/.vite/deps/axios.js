@@ -992,7 +992,7 @@ var parseHeaders_default = (rawHeaders) => {
 };
 
 // node_modules/axios/lib/core/AxiosHeaders.js
-var $internals = Symbol("internals");
+var$internals = Symbol("internals");
 function normalizeHeader(header) {
   return header && String(header).trim().toLowerCase();
 }
@@ -1713,7 +1713,7 @@ var composeSignals = (signals, timeout) => {
     };
     let timer = timeout && setTimeout(() => {
       timer = null;
-      onabort(new AxiosError_default(`timeout ${timeout} of ms exceeded`, AxiosError_default.ETIMEDOUT));
+      onabort(new AxiosError_default(`timeout${timeout} of ms exceeded`, AxiosError_default.ETIMEDOUT));
     }, timeout);
     const unsubscribe = () => {
       if (signals) {
@@ -2036,7 +2036,7 @@ utils_default.forEach(knownAdapters, (fn, value) => {
     Object.defineProperty(fn, "adapterName", { value });
   }
 });
-var renderReason = (reason) => `- ${reason}`;
+var renderReason = (reason) => `-${reason}`;
 var isResolvedHandle = (adapter2) => utils_default.isFunction(adapter2) || adapter2 === null || adapter2 === false;
 function getAdapter(adapters, config) {
   adapters = utils_default.isArray(adapters) ? adapters : [adapters];
@@ -2061,7 +2061,7 @@ function getAdapter(adapters, config) {
   }
   if (!adapter2) {
     const reasons = Object.entries(rejectedReasons).map(
-      ([id, state]) => `adapter ${id} ` + (state === false ? "is not supported by the environment" : "is not available in the build")
+      ([id, state]) => `adapter${id} ` + (state === false ? "is not supported by the environment" : "is not available in the build")
     );
     let s = length ? reasons.length > 1 ? "since :\n" + reasons.map(renderReason).join("\n") : " " + renderReason(reasons[0]) : "as no adapter specified";
     throw new AxiosError_default(
@@ -2165,7 +2165,7 @@ validators.transitional = function transitional(validator, version, message) {
 };
 validators.spelling = function spelling(correctSpelling) {
   return (value, opt) => {
-    console.warn(`${opt} is likely a misspelling of ${correctSpelling}`);
+    console.warn(`${opt} is likely a misspelling of${correctSpelling}`);
     return true;
   };
 };

@@ -47,7 +47,7 @@ export const getAdminDashboard = async (req, res) => {
       .sort((a, b) => b.orders - a.orders)
       .slice(0, 5)
       .map((item) => ({
-        name: `${item.user?.firstName ?? ""} ${item.user?.lastName ?? ""}`,
+        name: `${item.user?.firstName ?? ""}${item.user?.lastName ?? ""}`,
         email: item.user?.email ?? "N/A",
         orders: item.orders,
       }));
@@ -100,7 +100,7 @@ export const getAdminDashboard = async (req, res) => {
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 5)
       .map((item) => ({
-        name: `${item.seller?.firstName ?? ""} ${item.seller?.lastName ?? ""}`,
+        name: `${item.seller?.firstName ?? ""}${item.seller?.lastName ?? ""}`,
         email: item.seller?.email ?? "N/A",
         sold: item.sold,
       }));
@@ -159,7 +159,7 @@ export const getAdminDashboard = async (req, res) => {
     const revenuePerSeller = Object.values(sellerRevenueMap)
       .sort((a, b) => b.totalRevenue - a.totalRevenue)
       .map((item) => ({
-        sellerName: `${item.seller?.firstName ?? ""} ${item.seller?.lastName ?? ""}`,
+        sellerName: `${item.seller?.firstName ?? ""}${item.seller?.lastName ?? ""}`,
         email: item.seller?.email ?? "N/A",
         totalRevenue: item.totalRevenue,
         totalOrders: item.totalOrders,
@@ -219,7 +219,7 @@ export const getAdminDashboard = async (req, res) => {
 
       return {
         sellerId,
-        name: `${seller.firstName} ${seller.lastName}`,
+        name: `${seller.firstName}${seller.lastName}`,
         email: seller.email,
         totalProducts: sellerProducts.length,
         totalAmount,
@@ -296,8 +296,8 @@ export const deleteUser = async (req, res) => {
 
       // Cancel all orders containing those products
       await Order.updateMany(
-        { "items.product": { $in: productIds } },
-        { $set: { status: "cancelled" } }
+        { "items.product": {$in: productIds } },
+        {$set: { status: "cancelled" } }
       );
     }
     await User.findByIdAndDelete(userIdToDelete);
@@ -335,7 +335,7 @@ export const topUsers = async (req, res) => {
         userMap[userId] = {
           user: {
             id: order.user._id,
-            name: `${order.user.firstName} ${order.user.lastName}`,
+            name: `${order.user.firstName}${order.user.lastName}`,
             email: order.user.email,
           },
           totalOrders: 0,
@@ -429,7 +429,7 @@ export const topSellers = async (req, res) => {
           sellerSalesMap[sellerId] = {
             seller: {
               id: seller._id,
-              name: `${seller.firstName} ${seller.lastName}`,
+              name: `${seller.firstName}${seller.lastName}`,
               email: seller.email,
             },
             totalSold: 0,

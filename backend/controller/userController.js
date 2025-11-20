@@ -354,7 +354,7 @@ export const loginUser = async (req, res) => {
 
     if (role != user.role) {
       return res.status(400).json({
-        message: `Account doesn't exists with current role ${role}. `,
+        message: `Account doesn't exists with current role${role}. `,
         success: false,
       });
     }
@@ -385,7 +385,7 @@ export const loginUser = async (req, res) => {
         sameSite: "strict",
       })
       .json({
-        message: `Welcome back ${user.firstName}`,
+        message: `Welcome back${user.firstName}`,
         user,
         success: true,
       });

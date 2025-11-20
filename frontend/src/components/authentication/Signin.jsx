@@ -56,7 +56,7 @@ export default function Signin() {
           navigate("/seller/dashboard");
           break;
         default:
-          navigate("/");
+          navigate("/user/home");
           break;
       }
     } catch (error) {

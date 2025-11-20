@@ -54,7 +54,7 @@ const SellerDashboard = () => {
     },
     { 
       label: 'Revenue', 
-      value: `₹${stats?.totalRevenue?.toLocaleString() || 0}`, 
+      value: `$${stats?.totalRevenue?.toLocaleString() || 0}`, 
       icon: DollarSign,
       gradient: 'from-green-500 to-green-600',
       lightBg: 'bg-green-50',
@@ -116,7 +116,7 @@ const SellerDashboard = () => {
                   </div>
                   
                   <div className={`${stat.lightBg} p-3 rounded-xl group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className={`w-6 h-6 ${stat.iconColor}`} />
+                    <Icon className={`w-6 h-6${stat.iconColor}`} />
                   </div>
                 </div>
               </div>
@@ -124,7 +124,6 @@ const SellerDashboard = () => {
           })}
         </div>
 
-        {/* Order Status Section */}
         <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Order Status</h2>

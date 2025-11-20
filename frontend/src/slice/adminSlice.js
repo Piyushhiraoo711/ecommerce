@@ -120,7 +120,7 @@ export const topProducts = createAsyncThunk(
   }
 );
 
-export const totalOrderByStatus = createAsyncThunk(
+export const totalOrderStatus = createAsyncThunk(
   "admin/totalOrderByStatus",
   async (_, { rejectWithValue }) => {
     try {
@@ -247,15 +247,15 @@ const adminSlice = createSlice({
         state.error = action.payload;
       })
 
-       .addCase(totalOrderByStatus.pending, (state) => {
+       .addCase(totalOrderStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(totalOrderByStatus.fulfilled, (state, action) => {
+      .addCase(totalOrderStatus.fulfilled, (state, action) => {
         state.loading = false;
         state.totalOrderByStatus = action.payload;
       })
-      .addCase(totalOrderByStatus.rejected, (state, action) => {
+      .addCase(totalOrderStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

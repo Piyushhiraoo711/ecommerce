@@ -176,7 +176,7 @@ const GetOrders = () => {
                             </div>
                           </div>
                           <p className="font-semibold text-gray-900">
-                            ₹{item.product.price.toLocaleString()}
+                           ${item.product.price.toLocaleString()}
                           </p>
                         </div>
                       ))}
@@ -193,7 +193,7 @@ const GetOrders = () => {
                         <span className="font-medium text-gray-700">Total Amount</span>
                       </div>
                       <p className="text-2xl font-bold text-green-600">
-                        ₹{order.totalAmount.toLocaleString()}
+                       ${order.totalAmount.toLocaleString()}
                       </p>
                     </div>
                   </div>

@@ -166,7 +166,7 @@ var require_react_development = __commonJS({
       function ReactElement(type, key, props, owner, debugStack, debugTask) {
         var refProp = props.ref;
         type = {
-          $$typeof: REACT_ELEMENT_TYPE,
+         $$typeof: REACT_ELEMENT_TYPE,
           type,
           key,
           props,
@@ -742,7 +742,7 @@ var require_react_development = __commonJS({
       };
       exports.createContext = function(defaultValue) {
         defaultValue = {
-          $$typeof: REACT_CONTEXT_TYPE,
+         $$typeof: REACT_CONTEXT_TYPE,
           _currentValue: defaultValue,
           _currentValue2: defaultValue,
           _threadCount: 0,
@@ -751,7 +751,7 @@ var require_react_development = __commonJS({
         };
         defaultValue.Provider = defaultValue;
         defaultValue.Consumer = {
-          $$typeof: REACT_CONSUMER_TYPE,
+         $$typeof: REACT_CONSUMER_TYPE,
           _context: defaultValue
         };
         defaultValue._currentRenderer = null;
@@ -811,7 +811,7 @@ var require_react_development = __commonJS({
         null != render && null != render.defaultProps && console.error(
           "forwardRef render functions do not support defaultProps. Did you accidentally pass a React component?"
         );
-        var elementType = { $$typeof: REACT_FORWARD_REF_TYPE, render }, ownName;
+        var elementType = {$$typeof: REACT_FORWARD_REF_TYPE, render }, ownName;
         Object.defineProperty(elementType, "displayName", {
           enumerable: false,
           configurable: true,
@@ -829,7 +829,7 @@ var require_react_development = __commonJS({
       exports.lazy = function(ctor) {
         ctor = { _status: -1, _result: ctor };
         var lazyType = {
-          $$typeof: REACT_LAZY_TYPE,
+         $$typeof: REACT_LAZY_TYPE,
           _payload: ctor,
           _init: lazyInitializer
         }, ioInfo = {
@@ -851,7 +851,7 @@ var require_react_development = __commonJS({
           null === type ? "null" : typeof type
         );
         compare = {
-          $$typeof: REACT_MEMO_TYPE,
+         $$typeof: REACT_MEMO_TYPE,
           type,
           compare: void 0 === compare ? null : compare
         };

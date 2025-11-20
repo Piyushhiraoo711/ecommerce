@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Profiler, useEffect, useState } from "react";
 import Sidebar from "../Sidebar.jsx";
 import Navbar from "../Navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,7 @@ const AdminLayout = () => {
       dispatch(logoutUser());
       toast.success("Logged Out successfully");
       navigate("/signin");
+      return;
     }
     navigate(`/admin/${id}`);
   };
@@ -40,11 +41,11 @@ const AdminLayout = () => {
     { id: "all-user", label: "All Users", icon: <Users /> },
     { id: "all-seller", label: "All Sellers", icon: <ShoppingBag /> },
     { id: "all-products", label: "All Products", icon: <Package /> },
-    { id: "all-orders", label: "All Orders", icon: <ClipboardList /> },
     { id: "top-users", label: "Top Users", icon: <ClipboardList /> },
     { id: "top-sellers", label: "Top Sellers", icon: <ClipboardList /> },
     { id: "top-products", label: "Top Products", icon: <ClipboardList /> },
     { id: "order-by-status", label: "Order Status", icon: <ClipboardList /> },
+    { id: "my-profile", label: "My Profile", icon: <Users /> },
     { id: "logout", label: "Logout", icon: <LogOut /> },
   ];
 
@@ -62,7 +63,7 @@ const AdminLayout = () => {
                 key={item.id}
                 onClick={() => handleClick(item.id)}
                 className={`flex items-center gap-3 w-full p-3 rounded-xl
-                ${
+               ${
                   activePage === item.id
                     ? "bg-blue-400 text-white"
                     : "hover:bg-indigo-200"

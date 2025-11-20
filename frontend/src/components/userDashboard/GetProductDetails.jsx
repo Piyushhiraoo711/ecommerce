@@ -33,7 +33,7 @@ const ProductDetails = () => {
    try {
      await dispatch(addToCart({productId: id, quantity}))
      toast.success("Added to cart");
-     navigate("/cart");
+     navigate("/user/cart");
    } catch (error) {
     toast.error("Failed to add to cart");
    }
@@ -68,7 +68,7 @@ const ProductDetails = () => {
               key={img._id}
               src={img.url}
               alt={product.name}
-              className={`w-16 h-16 object-cover rounded cursor-pointer border ${
+              className={`w-16 h-16 object-cover rounded cursor-pointer border${
                 index === currentImage ? "border-blue-500" : "border-gray-300"
               }`}
               onClick={() => setCurrentImage(index)}
@@ -80,7 +80,7 @@ const ProductDetails = () => {
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold">{product.name}</h1>
         <p className="text-2xl font-semibold text-indigo-600">
-          ₹{product.price}
+         ${product.price}
         </p>
         <p className="text-gray-700">{product.description}</p>
 
@@ -115,7 +115,7 @@ const ProductDetails = () => {
         <button
         onClick={()=> handleAddToCart(product._id)}
           disabled={product.stock === 0}
-          className={`mt-4 px-6 py-3 text-white rounded-lg ${
+          className={`mt-4 px-6 py-3 text-white rounded-lg${
             product.stock > 0
               ? "bg-indigo-600 hover:bg-indigo-700"
               : "bg-gray-400 cursor-not-allowed"

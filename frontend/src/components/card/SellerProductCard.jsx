@@ -137,7 +137,7 @@ const SellerProductsCard = ({ sellerProduct }) => {
                       <div>
                         <p className="text-xs text-gray-500">Price</p>
                         <p className="text-lg font-bold text-gray-900">
-                          ₹{product.price.toLocaleString()}
+                         ${product.price.toLocaleString()}
                         </p>
                       </div>
                     </div>

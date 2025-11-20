@@ -3542,26 +3542,26 @@ var require_react_dom_client_development = __commonJS({
       function resolveForwardRefForHotReloading(type) {
         if (null === resolveFamily) return type;
         var family = resolveFamily(type);
-        return void 0 === family ? null !== type && void 0 !== type && "function" === typeof type.render && (family = resolveFunctionForHotReloading(type.render), type.render !== family) ? (family = { $$typeof: REACT_FORWARD_REF_TYPE, render: family }, void 0 !== type.displayName && (family.displayName = type.displayName), family) : type : family.current;
+        return void 0 === family ? null !== type && void 0 !== type && "function" === typeof type.render && (family = resolveFunctionForHotReloading(type.render), type.render !== family) ? (family = {$$typeof: REACT_FORWARD_REF_TYPE, render: family }, void 0 !== type.displayName && (family.displayName = type.displayName), family) : type : family.current;
       }
       function isCompatibleFamilyForHotReloading(fiber, element) {
         if (null === resolveFamily) return false;
         var prevType = fiber.elementType;
         element = element.type;
-        var needsCompareFamilies = false, $$typeofNextType = "object" === typeof element && null !== element ? element.$$typeof : null;
+        var needsCompareFamilies = false,$$typeofNextType = "object" === typeof element && null !== element ? element.$$typeof : null;
         switch (fiber.tag) {
           case 1:
             "function" === typeof element && (needsCompareFamilies = true);
             break;
           case 0:
-            "function" === typeof element ? needsCompareFamilies = true : $$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
+            "function" === typeof element ? needsCompareFamilies = true :$$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
             break;
           case 11:
-            $$typeofNextType === REACT_FORWARD_REF_TYPE ? needsCompareFamilies = true : $$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
+           $$typeofNextType === REACT_FORWARD_REF_TYPE ? needsCompareFamilies = true :$$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
             break;
           case 14:
           case 15:
-            $$typeofNextType === REACT_MEMO_TYPE ? needsCompareFamilies = true : $$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
+           $$typeofNextType === REACT_MEMO_TYPE ? needsCompareFamilies = true :$$typeofNextType === REACT_LAZY_TYPE && (needsCompareFamilies = true);
             break;
           default:
             return false;
@@ -18343,7 +18343,7 @@ var require_react_dom_client_development = __commonJS({
           });
         };
       }, scheduleCallback$2 = Scheduler.unstable_scheduleCallback, NormalPriority = Scheduler.unstable_NormalPriority, CacheContext = {
-        $$typeof: REACT_CONTEXT_TYPE,
+       $$typeof: REACT_CONTEXT_TYPE,
         Consumer: null,
         Provider: null,
         _currentValue: null,
@@ -19949,7 +19949,7 @@ var require_react_dom_client_development = __commonJS({
         }
       };
       var globalDocument = "undefined" === typeof document ? null : document, tagCaches = null, SUSPENSEY_STYLESHEET_TIMEOUT = 6e4, SUSPENSEY_IMAGE_TIMEOUT = 800, SUSPENSEY_IMAGE_TIME_ESTIMATE = 500, estimatedBytesWithinLimit = 0, LAST_PRECEDENCE = null, precedencesByRoot = null, NotPendingTransition = NotPending, HostTransitionContext = {
-        $$typeof: REACT_CONTEXT_TYPE,
+       $$typeof: REACT_CONTEXT_TYPE,
         Provider: null,
         Consumer: null,
         _currentValue: NotPendingTransition,

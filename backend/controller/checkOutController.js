@@ -25,7 +25,7 @@ export const checkout = async (req, res) => {
       if (item.quantity > item.product.stock) {
         return res.status(400).json({
           success: false,
-          message: `Out of stock for product ${item.product.name}`,
+          message: `Out of stock for product${item.product.name}`,
         });
       }
 

@@ -1,8 +1,8 @@
 import "./chunk-G3PMV62Z.js";
 
 // node_modules/redux/dist/redux.mjs
-var $$observable = (() => typeof Symbol === "function" && Symbol.observable || "@@observable")();
-var symbol_observable_default = $$observable;
+var$$observable = (() => typeof Symbol === "function" && Symbol.observable || "@@observable")();
+var symbol_observable_default =$$observable;
 var randomString = () => Math.random().toString(36).substring(7).split("").join(".");
 var ActionTypes = {
   INIT: `@@redux/INIT${randomString()}`,
@@ -228,7 +228,7 @@ function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, une
     return "Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.";
   }
   if (!isPlainObject(inputState)) {
-    return `The ${argumentName} has unexpected type of "${kindOf(inputState)}". Expected argument to be an object with the following keys: "${reducerKeys.join('", "')}"`;
+    return `The${argumentName} has unexpected type of "${kindOf(inputState)}". Expected argument to be an object with the following keys: "${reducerKeys.join('", "')}"`;
   }
   const unexpectedKeys = Object.keys(inputState).filter((key) => !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key]);
   unexpectedKeys.forEach((key) => {
@@ -237,7 +237,7 @@ function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, une
   if (action && action.type === actionTypes_default.REPLACE)
     return;
   if (unexpectedKeys.length > 0) {
-    return `Unexpected ${unexpectedKeys.length > 1 ? "keys" : "key"} "${unexpectedKeys.join('", "')}" found in ${argumentName}. Expected to find one of the known reducer keys instead: "${reducerKeys.join('", "')}". Unexpected keys will be ignored.`;
+    return `Unexpected${unexpectedKeys.length > 1 ? "keys" : "key"} "${unexpectedKeys.join('", "')}" found in${argumentName}. Expected to find one of the known reducer keys instead: "${reducerKeys.join('", "')}". Unexpected keys will be ignored.`;
   }
 }
 function assertReducerShape(reducers) {
@@ -300,7 +300,7 @@ function combineReducers(reducers) {
       const nextStateForKey = reducer(previousStateForKey, action);
       if (typeof nextStateForKey === "undefined") {
         const actionType = action && action.type;
-        throw new Error(false ? formatProdErrorMessage(14) : `When called with an action of type ${actionType ? `"${String(actionType)}"` : "(unknown type)"}, the slice reducer for key "${key}" returned undefined. To ignore an action, you must explicitly return the previous state. If you want this reducer to hold no value, you can return null instead of undefined.`);
+        throw new Error(false ? formatProdErrorMessage(14) : `When called with an action of type${actionType ? `"${String(actionType)}"` : "(unknown type)"}, the slice reducer for key "${key}" returned undefined. To ignore an action, you must explicitly return the previous state. If you want this reducer to hold no value, you can return null instead of undefined.`);
       }
       nextState[key] = nextStateForKey;
       hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
@@ -384,14 +384,14 @@ var errors = true ? [
   "First argument to `createDraft` must be a plain object, an array, or an immerable object",
   "First argument to `finishDraft` must be a draft returned by `createDraft`",
   function(thing) {
-    return `'current' expects a draft, got: ${thing}`;
+    return `'current' expects a draft, got:${thing}`;
   },
   "Object.defineProperty() cannot be used on an Immer draft",
   "Object.setPrototypeOf() cannot be used on an Immer draft",
   "Immer only supports deleting array indices",
   "Immer only supports setting array indices and the 'length' property",
   function(thing) {
-    return `'original' expects a draft, got: ${thing}`;
+    return `'original' expects a draft, got:${thing}`;
   }
   // Note: if more errors are added, the errorOffset in Patches.ts should be increased
   // See Patches.ts for additional errors
@@ -400,10 +400,10 @@ function die(error, ...args) {
   if (true) {
     const e = errors[error];
     const msg = typeof e === "function" ? e.apply(null, args) : e;
-    throw new Error(`[Immer] ${msg}`);
+    throw new Error(`[Immer]${msg}`);
   }
   throw new Error(
-    `[Immer] minified error nr: ${error}. Full error at: https://bit.ly/3cXEKWf`
+    `[Immer] minified error nr:${error}. Full error at: https://bit.ly/3cXEKWf`
   );
 }
 var getPrototypeOf = Object.getPrototypeOf;
@@ -1157,12 +1157,12 @@ var globalDevModeChecks = {
   identityFunctionCheck: "once"
 };
 var NOT_FOUND = Symbol("NOT_FOUND");
-function assertIsFunction(func, errorMessage = `expected a function, instead received ${typeof func}`) {
+function assertIsFunction(func, errorMessage = `expected a function, instead received${typeof func}`) {
   if (typeof func !== "function") {
     throw new TypeError(errorMessage);
   }
 }
-function assertIsObject(object, errorMessage = `expected an object, instead received ${typeof object}`) {
+function assertIsObject(object, errorMessage = `expected an object, instead received${typeof object}`) {
   if (typeof object !== "object") {
     throw new TypeError(errorMessage);
   }
@@ -1170,7 +1170,7 @@ function assertIsObject(object, errorMessage = `expected an object, instead rece
 function assertIsArrayOfFunctions(array, errorMessage = `expected all items to be functions, instead received the following types: `) {
   if (!array.every((item) => typeof item === "function")) {
     const itemTypes = array.map(
-      (item) => typeof item === "function" ? `function ${item.name || "unnamed"}()` : typeof item
+      (item) => typeof item === "function" ? `function${item.name || "unnamed"}()` : typeof item
     ).join(", ");
     throw new TypeError(`${errorMessage}[${itemTypes}]`);
   }
@@ -1502,7 +1502,7 @@ var createStructuredSelector = Object.assign(
   (inputSelectorsObject, selectorCreator = createSelector) => {
     assertIsObject(
       inputSelectorsObject,
-      `createStructuredSelector expects first argument to be an object where each property is a selector, instead received a ${typeof inputSelectorsObject}`
+      `createStructuredSelector expects first argument to be an object where each property is a selector, instead received a${typeof inputSelectorsObject}`
     );
     const inputSelectorKeys = Object.keys(inputSelectorsObject);
     const dependencies = inputSelectorKeys.map(
@@ -1634,7 +1634,7 @@ function getTimeMeasureUtils(maxDelay, fnName) {
     },
     warnIfExceeded() {
       if (elapsed > maxDelay) {
-        console.warn(`${fnName} took ${elapsed}ms, which is more than the warning threshold of ${maxDelay}ms. 
+        console.warn(`${fnName} took${elapsed}ms, which is more than the warning threshold of${maxDelay}ms. 
 If your state or actions are very large, you may want to disable the middleware as it might cause too much of a slowdown in development mode. See https://redux-toolkit.js.org/api/getDefaultMiddleware for instructions.
 It is disabled in production builds, so you don't need to worry about that.`);
       }
@@ -1790,7 +1790,7 @@ function createImmutableStateInvariantMiddleware(options = {}) {
           result = tracker.detectMutations();
           tracker = track(state);
           if (result.wasMutated) {
-            throw new Error(false ? formatProdErrorMessage(20) : `A state mutation was detected inside a dispatch, in the path: ${result.path || ""}. Take a look at the reducer(s) handling the action ${stringify2(action)}. (https://redux.js.org/style-guide/style-guide#do-not-mutate-state)`);
+            throw new Error(false ? formatProdErrorMessage(20) : `A state mutation was detected inside a dispatch, in the path:${result.path || ""}. Take a look at the reducer(s) handling the action${stringify2(action)}. (https://redux.js.org/style-guide/style-guide#do-not-mutate-state)`);
           }
         });
         measureUtils.warnIfExceeded();
@@ -1898,7 +1898,7 @@ function createSerializableStateInvariantMiddleware(options = {}) {
               value
             } = foundStateNonSerializableValue;
             console.error(`A non-serializable value was detected in the state, in the path: \`${keyPath}\`. Value:`, value, `
-Take a look at the reducer(s) handling this action type: ${action.type}.
+Take a look at the reducer(s) handling this action type:${action.type}.
 (See https://redux.js.org/faq/organizing-state#can-i-put-functions-promises-or-other-non-serializable-items-in-my-store-state)`);
           }
         });
@@ -3197,7 +3197,7 @@ var listenerCompleted = `${listener}-${completed}`;
 var TaskAbortError = class {
   constructor(code) {
     this.code = code;
-    this.message = `${task} ${cancelled} (reason: ${code})`;
+    this.message = `${task}${cancelled} (reason:${code})`;
   }
   name = "TaskAbortError";
   message;
@@ -3695,7 +3695,7 @@ function combineSlices(...slices) {
     const currentReducer = reducerMap[reducerPath];
     if (!config.overrideExisting && currentReducer && currentReducer !== reducerToInject) {
       if (typeof process !== "undefined" && true) {
-        console.error(`called \`inject\` to override already-existing reducer ${reducerPath} without specifying \`overrideExisting: true\``);
+        console.error(`called \`inject\` to override already-existing reducer${reducerPath} without specifying \`overrideExisting: true\``);
       }
       return combinedReducer;
     }

@@ -12,7 +12,7 @@ const mailTextContent = (username, userEmail, userRole) => {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Welcome to ${companyName}</title>
+  <title>Welcome to${companyName}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
@@ -29,7 +29,7 @@ const mailTextContent = (username, userEmail, userRole) => {
                     <img src="${logoUrl}" alt="${companyName} logo" width="120" style="display:block;border:0;outline:none;text-decoration:none;">
                   </td>
                   <td align="right" style="vertical-align:middle;font-size:14px;color:rgba(255,255,255,0.95);">
-                    <strong>Welcome, ${username}!</strong>
+                    <strong>Welcome,${username}!</strong>
                   </td>
                 </tr>
               </table>
@@ -39,9 +39,9 @@ const mailTextContent = (username, userEmail, userRole) => {
           <!-- Body -->
           <tr>
             <td style="padding:28px 28px 8px 28px;color:#111827;">
-              <h1 style="margin:0 0 12px 0;font-size:20px;line-height:1.2;color:#0f1724;font-weight:600;">Thanks for joining ${companyName} 🎉</h1>
+              <h1 style="margin:0 0 12px 0;font-size:20px;line-height:1.2;color:#0f1724;font-weight:600;">Thanks for joining${companyName} 🎉</h1>
               <p style="margin:0 0 16px 0;color:#475569;font-size:15px;line-height:1.5;">
-                Hi ${username}, thanks for creating an account with us!
+                Hi${username}, thanks for creating an account with us!
               </p>
 
               <hr style="border:none;border-top:1px solid #eef2f7;margin:20px 0;">
@@ -77,7 +77,7 @@ const mailTextContent = (username, userEmail, userRole) => {
                   <td style="font-size:13px;color:#64748b;">
                     <strong>${companyName}</strong><br>
                     A company that’s just getting started.<br>
-                    <span style="font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} ${companyName}. All rights reserved.</span>
+                    <span style="font-size:12px;color:#94a3b8;">©${new Date().getFullYear()}${companyName}. All rights reserved.</span>
                   </td>
                 </tr>
               </table>

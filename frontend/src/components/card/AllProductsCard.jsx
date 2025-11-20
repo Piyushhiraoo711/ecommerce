@@ -22,7 +22,7 @@ const AllProductsCard
               <td className="py-3 px-4">{u.email}</td>
               <td className="py-3 px-4 text-center">{u.totalOrders}</td>
               <td className="py-3 px-4 text-right">
-                ₹{u.totalAmount.toLocaleString()}
+               ${u.totalAmount.toLocaleString()}
               </td>
             </tr>
           ))}

@@ -8,31 +8,43 @@ import { placeOrder } from "../../slice/orderSlice";
 
 const PlaceOrder = () => {
   const { id } = useParams();
-  const [products, setProducts] = useState([{ product: "", quantity: 1 }]);
-  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const { product } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
-  const handleOrder = async () => {
-    console.log({ products, paymentMethod });
-    const result = await dispatch(placeOrder({ products, paymentMethod }));
-    if (result) {
-      toast.success("Order Placed Sucessfully");
-      navigate("/")
-    } else {
-      toast.error("Order failed");
-    }
-  };
+  const { product, loading } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getProductById(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    setProducts([{ product: product._id, quantity: quantity }]);
-  }, [quantity]);
+    if (product && product._id) {
+      setProducts([{ product: product._id, quantity }]);
+    }
+  }, [product, quantity]);
+
+  const handleOrder = async () => {
+    if (!products.length || !products[0].product) {
+      toast.error("Product not loaded. Please wait.");
+      return;
+    }
+
+    const result = await dispatch(placeOrder({ products, paymentMethod }));
+
+    if (result.meta.requestStatus === "fulfilled") {
+      toast.success("Order Placed Successfully");
+      navigate("/user/home");
+    } else {
+      toast.error(result.payload || "Order failed");
+    }
+  };
+
+  if (loading) {
+    return <h1>Please wait to load product</h1>;
+  }
 
   return (
     <>
@@ -43,7 +55,7 @@ const PlaceOrder = () => {
             <h1>Place order</h1>
           </div>
           <img
-            src={product.images[0].url}
+            src={product?.images[0]?.url}
             alt={product.name}
             className="w-full h-56 object-cover rounded-md"
           />
@@ -51,7 +63,7 @@ const PlaceOrder = () => {
           <h2 className="text-xl font-bold mt-3">{product.name}</h2>
           <p className="text-gray-600 text-sm">{product.description}</p>
 
-          <p className="text-lg font-semibold mt-2">₹{product.price}</p>
+          <p className="text-lg font-semibold mt-2">${product.price}</p>
 
           <label className="block font-semibold mt-3">Quantity</label>
           <select
@@ -73,7 +85,7 @@ const PlaceOrder = () => {
             />
           </div>
 
-          <p className="font-bold mt-4">Total: ₹{product.price * quantity}</p>
+          <p className="font-bold mt-4">Total:${product.price * quantity}</p>
 
           <button
             onClick={handleOrder}

@@ -4,22 +4,26 @@ import { ORDER_API_END_POINT } from "../utils/constant";
 
 export const placeOrder = createAsyncThunk(
   "order/placeOrder",
-  async ({ items, paymentMethod }, { rejectWithValue }) => {
+  async ({ products, paymentMethod }, { rejectWithValue }) => {
     try {
-      const products = items.map((item) => ({
-        product: item.product._id,
+      if (!products || !Array.isArray(products) || products.length === 0) {
+        return rejectWithValue("No products provided");
+      }
+
+      const mappedProducts = products.map((item) => ({
+        product: item.product?._id ?? item.product,
         quantity: item.quantity,
       }));
+
       const { data } = await axios.post(
         `${ORDER_API_END_POINT}/create`,
-        { products, paymentMethod },
+        { products: mappedProducts, paymentMethod },
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
+
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
@@ -49,9 +53,12 @@ export const cancelOrder = createAsyncThunk(
   "order/cancelOrder",
   async (orderId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.delete(`${ORDER_API_END_POINT}/cancel-order/${orderId}`, {
-        withCredentials: true,
-      });
+      const { data } = await axios.delete(
+        `${ORDER_API_END_POINT}/cancel-order/${orderId}`,
+        {
+          withCredentials: true,
+        }
+      );
       return data;
     } catch (err) {
       return rejectWithValue(
