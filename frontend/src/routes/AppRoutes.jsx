@@ -16,7 +16,7 @@ import GetOrders from "../components/sellerDashboard/GetOrders.jsx";
 import UpdateProduct from "../components/sellerDashboard/UpdateProduct.jsx";
 import GetProductDetails from "../components/userDashboard/GetProductDetails.jsx";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute.jsx";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import MyProfile from "../components/userDashboard/MyProfile.jsx";
 import UpdateProfile from "../components/userDashboard/UpdateProfile.jsx";
 import PlaceOrder from "../components/userDashboard/PlaceOrder.jsx";
@@ -37,6 +37,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={<Navigate to="/signin" replace />} />
 
       <Route path="/user" element={<UserLayout />}>
         <Route path="home" element={<Home />} />
@@ -53,7 +54,6 @@ const AppRoutes = () => {
       <Route path="/forget-otp-verify" element={<ForgetOtpVerify />} />
       <Route path="/reset-password" element={<ResetOtp />} />
       <Route path="/product/:id" element={<GetProductDetails />} />
-
       <Route path="/place-order/:id" element={<PlaceOrder />} />
 
       {/* Seller Routes (Protected) */}
@@ -70,7 +70,7 @@ const AppRoutes = () => {
         <Route path="get-products" element={<GetProducts />} />
         <Route path="get-orders" element={<GetOrders />} />
         <Route path="update-product/:id" element={<UpdateProduct />} />
-        <Route path="my-profile" element={<SellerProfile/>}/>
+        <Route path="my-profile" element={<SellerProfile />} />
       </Route>
 
       {/* Admin Routes (Protected) */}
@@ -85,7 +85,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="all-user" element={<AllUsers />} />
         <Route path="all-seller" element={<AllSellers />} />
-        <Route path="all-order" element={<AllOrders/>}/>
+        <Route path="all-order" element={<AllOrders />} />
         <Route path="all-products" element={<AllProducts />} />
         <Route path="top-users" element={<TopUsers />} />
         <Route path="top-sellers" element={<TopSellers />} />
