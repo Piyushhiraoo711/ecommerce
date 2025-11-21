@@ -17,16 +17,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const corsOptions = {
-  origin: "http://localhost:5173/",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://ecommerce-omega-beryl-93.vercel.app",
+      "https://ecommerce-git-main-piyushhiraoo711s-projects.vercel.app",
+      "https://ecommerce-i1piy1px3-piyushhiraoo711s-projects.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"],
+  })
+);
 
 const PORT = process.env.PORT || 3000;
-
 
 app.use("/auth", userRoutes);
 app.use("/product", productRoutes);
