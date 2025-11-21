@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { totalUsers } from "../../slice/adminSlice";
+import {  totalUsers } from "../../slice/adminSlice";
 import {
   Users,
   ShoppingCart,
@@ -11,6 +11,9 @@ import {
   User,
   TrendingUp,
   AlertCircle,
+  DeleteIcon,
+  Delete,
+  Trash2,
 } from "lucide-react";
 
 const AllUsers = () => {
@@ -48,6 +51,7 @@ const AllUsers = () => {
   const activeUsers = data.filter((u) => u.totalOrders > 0).length;
   const totalRevenue = data.reduce((sum, u) => sum + u.totalAmount, 0);
   const totalOrders = data.reduce((sum, u) => sum + u.totalOrders, 0);
+
 
   const StatCard = ({ icon: Icon, label, value, subtext, color }) => (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all">
@@ -91,7 +95,7 @@ const AllUsers = () => {
             className={`px-3 py-1 rounded-full text-xs font-semibold ${
               isActive
                 ? "bg-green-100 text-green-700"
-                : "bg-gray-100 text-gray-600"
+                : "bg-red-400 text-gray-600"
             }`}
           >
             {isActive ? "Active" : "Inactive"}
@@ -126,7 +130,6 @@ const AllUsers = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center space-x-2">
             <Users className="w-8 h-8" />
@@ -137,7 +140,6 @@ const AllUsers = () => {
           </p>
         </div>
 
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={Users}
@@ -174,10 +176,8 @@ const AllUsers = () => {
           />
         </div>
 
-        
         <div className="bg-white rounded-lg shadow-md p-4 mb-6">
           <div className="flex flex-col md:flex-row gap-4">
-            
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -189,7 +189,6 @@ const AllUsers = () => {
               />
             </div>
 
-        
             <div className="flex items-center space-x-2">
               <Filter className="w-5 h-5 text-gray-500" />
               <select
@@ -204,7 +203,6 @@ const AllUsers = () => {
             </div>
           </div>
 
-          
           <div className="mt-3 text-sm text-gray-600">
             Showing{" "}
             <span className="font-semibold">{filteredUsers.length}</span> of{" "}
@@ -212,7 +210,6 @@ const AllUsers = () => {
           </div>
         </div>
 
-    
         {filteredUsers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredUsers.map((user) => (

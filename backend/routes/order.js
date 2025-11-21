@@ -5,6 +5,7 @@ import {
   createOrder,
   deleteOrder,
   getAllMyOrders,
+  getAllOrdersForAdmin,
   getOrderById,
   getSellerStats,
   getUsersOrders,
@@ -22,11 +23,13 @@ router.route("/my-orders").get(verifyToken , authorizeRoles("user"), getAllMyOrd
 
 router.route("/user-orders").get(verifyToken, authorizeRoles("seller", "admin"), getUsersOrders);
 
+router.route("/all-orders-admin").get(verifyToken, authorizeRoles("admin"), getAllOrdersForAdmin);
+
 router.route("/stats").get(verifyToken , authorizeRoles("seller"), getSellerStats);
 
 router.route("/:id").get(verifyToken, authorizeRoles("user", "seller", "admin"), getOrderById);
 
-router.route("/:id").put(verifyToken, authorizeRoles("seller", "admin"), updateOrderStatus);
+router.route("/update-status").put(verifyToken, authorizeRoles("admin"), updateOrderStatus);
 
 router.route("/:id").delete(verifyToken, authorizeRoles("seller", "admin"), deleteOrder);
 

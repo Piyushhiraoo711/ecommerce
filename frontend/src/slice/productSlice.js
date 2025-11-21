@@ -173,7 +173,7 @@ const productSlice = createSlice({
     products: [],
     product: null,
     sellerProduct: [],
-    cart: null,
+    cart: [],
     orders: [],
     loading: false,
     error: null,
@@ -275,7 +275,7 @@ const productSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-         state.cart = action.payload.cart ?? action.payload;
+        state.cart = action.payload.cart ?? action.payload;
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
@@ -288,7 +288,7 @@ const productSlice = createSlice({
       })
       .addCase(getMyCart.fulfilled, (state, action) => {
         state.loading = false;
-       state.cart = action.payload.cart ?? action.payload;
+        state.cart = action.payload.cart ?? action.payload;
       })
       .addCase(getMyCart.rejected, (state, action) => {
         state.loading = false;
@@ -296,7 +296,7 @@ const productSlice = createSlice({
       })
 
       .addCase(removeItem.fulfilled, (state, action) => {
-         state.cart = action.payload.cart ?? action.payload;
+        state.cart = action.payload.cart ?? action.payload;
       })
       .addCase(clearCart.fulfilled, (state, action) => {
         state.cart = action.payload.cart ?? action.payload;

@@ -56,6 +56,9 @@ export const loginUser = createAsyncThunk(
         credentials,
         { withCredentials: true }
       );
+      // When login succeeds
+      console.log("data",data)
+      localStorage.setItem("user", JSON.stringify(data));
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Login failed");
@@ -83,7 +86,7 @@ export const updatedUser = createAsyncThunk(
   "auth/updatedUser",
   async ({ userId, updatedData }, { rejectWithValue }) => {
     try {
-      console.log(userId, updatedData)
+      console.log(userId, updatedData);
       const response = await axios.put(
         `${USER_API_END_POINT}/${userId}`,
         updatedData,

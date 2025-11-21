@@ -1,7 +1,7 @@
 // adminSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ADMIN_API_END_POINT, PRODUCT_API_END_POINT } from "../utils/constant";
+import { ADMIN_API_END_POINT, ORDER_API_END_POINT, PRODUCT_API_END_POINT } from "../utils/constant";
 
 // fetch admin dashboard data
 export const fetchAdminDashboard = createAsyncThunk(
@@ -45,6 +45,22 @@ export const totalSellers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${ADMIN_API_END_POINT}/total-seller`, {
+        withCredentials: true,
+      });
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to fetch dashboard"
+      );
+    }
+  }
+);
+
+export const totalOrders = createAsyncThunk(
+  "admin/totalOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${ORDER_API_END_POINT}/all-orders-admin`, {
         withCredentials: true,
       });
       return data;
@@ -139,6 +155,28 @@ export const totalOrderStatus = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "admin/updateOrderStatus",
+  async ({ id, status, paymentStatus }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+      `${ORDER_API_END_POINT}/update-status`,
+        { id, status, paymentStatus },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
+      return data; 
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to update order");
+    }
+  }
+);
+
+
+
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
@@ -147,6 +185,7 @@ const adminSlice = createSlice({
     error: null,
     totalUser: null,
     totalSeller: null,
+    totalOrder:null,
     allProduct: null,
     topUser: null,
     topSeller: null,
@@ -191,6 +230,19 @@ const adminSlice = createSlice({
         state.totalSeller = action.payload;
       })
       .addCase(totalSellers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(totalOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(totalOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalOrder = action.payload;
+      })
+      .addCase(totalOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -258,7 +310,7 @@ const adminSlice = createSlice({
       .addCase(totalOrderStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
 
   },
 });

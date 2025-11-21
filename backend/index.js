@@ -27,9 +27,6 @@ app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/test", (req, res) => {
-  res.send("API working fine");
-});
 
 app.use("/auth", userRoutes);
 app.use("/product", productRoutes);

@@ -31,6 +31,7 @@ import OrderByStatus from "../components/adminDashboard/OrderByStatus.jsx";
 import UserLayout from "../components/userDashboard/UserLayout.jsx";
 import AdminProfile from "../components/adminDashboard/AdminProfile.jsx";
 import SellerProfile from "../components/sellerDashboard/SellerProfile.jsx";
+import AllOrders from "../components/adminDashboard/AllOrders.jsx";
 
 const AppRoutes = () => {
   return (
@@ -84,6 +85,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="all-user" element={<AllUsers />} />
         <Route path="all-seller" element={<AllSellers />} />
+        <Route path="all-order" element={<AllOrders/>}/>
         <Route path="all-products" element={<AllProducts />} />
         <Route path="top-users" element={<TopUsers />} />
         <Route path="top-sellers" element={<TopSellers />} />

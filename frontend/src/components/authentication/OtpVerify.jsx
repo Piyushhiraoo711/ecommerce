@@ -12,10 +12,9 @@ const OtpVerify = ({ length = 6, onSubmit }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
-  // Handle input change
   const handleChange = (e, index) => {
     const { value } = e.target;
-    if (!/^[0-9]?$/.test(value)) return; // only digits allowed
+    if (!/^[0-9]?$/.test(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value;
@@ -26,14 +25,12 @@ const OtpVerify = ({ length = 6, onSubmit }) => {
     }
   };
 
-  // Handle key press (for backspace navigation)
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputsRef.current[index - 1].focus();
     }
   };
 
-  // Handle paste event
   const handlePaste = (e) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData("text").slice(0, length);
@@ -61,13 +58,25 @@ const OtpVerify = ({ length = 6, onSubmit }) => {
 
     console.log("Submitted OTP:", user?.email, otpValue);
 
+    console.log(user);
+
     const resultAction = await dispatch(
       otpVerify({ email: user?.email, otp: otpValue })
     );
 
     if (otpVerify.fulfilled.match(resultAction)) {
       console.log("OTP verified successfully", resultAction.payload);
-      navigate("/");
+      switch (user?.role) {
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "seller":
+          navigate("/seller/dashboard");
+          break;
+        default:
+          navigate("/user/home");
+          break;
+      }
     } else {
       console.error("OTP verification failed", resultAction.payload);
     }

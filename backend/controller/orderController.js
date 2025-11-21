@@ -92,7 +92,6 @@ export const getUsersOrders = async (req, res) => {
   try {
     const sellerId = req.user._id;
 
- 
     const sellerProducts = await Product.find({ createdBy: sellerId }).select(
       "_id"
     );
@@ -185,8 +184,7 @@ export const getOrderById = async (req, res) => {
 //seller and admin can update the order status
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { status, paymentStatus } = req.body;
+    const { id, status, paymentStatus } = req.body;
 
     const validStatuses = [
       "pending",
@@ -482,3 +480,31 @@ export const getSellerStats = async (req, res) => {
     });
   }
 };
+
+export const getAllOrdersForAdmin = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("user", "firstName lastName email") 
+      .populate("products.product", "name price category brand images") 
+      .sort({ createdAt: -1 }); 
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No orders found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      totalOrders: orders.length,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch orders",
+    });
+  }
+};
+

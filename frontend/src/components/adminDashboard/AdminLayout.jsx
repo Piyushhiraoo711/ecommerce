@@ -40,6 +40,7 @@ const AdminLayout = () => {
     { id: "dashboard", label: "Dashboard", icon: <ClipboardList /> },
     { id: "all-user", label: "All Users", icon: <Users /> },
     { id: "all-seller", label: "All Sellers", icon: <ShoppingBag /> },
+    { id: "all-order", label: "All Orders", icon: <ShoppingBag /> },
     { id: "all-products", label: "All Products", icon: <Package /> },
     { id: "top-users", label: "Top Users", icon: <ClipboardList /> },
     { id: "top-sellers", label: "Top Sellers", icon: <ClipboardList /> },
@@ -64,10 +65,10 @@ const AdminLayout = () => {
                 onClick={() => handleClick(item.id)}
                 className={`flex items-center gap-3 w-full p-3 rounded-xl
                ${
-                  activePage === item.id
-                    ? "bg-blue-400 text-white"
-                    : "hover:bg-indigo-200"
-                }`}
+                 activePage === item.id
+                   ? "bg-blue-400 text-white"
+                   : "hover:bg-indigo-200"
+               }`}
               >
                 {item.icon}
                 {item.label}

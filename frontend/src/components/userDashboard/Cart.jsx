@@ -19,6 +19,33 @@ const Cart = () => {
     dispatch(getMyCart());
   }, [dispatch]);
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen text-lg">
+        Loading cart...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500 text-lg">
+        {error}
+      </div>
+    );
+
+  if (cart === null) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <ShoppingCart size={64} className="text-gray-300 mb-4" />
+        <h2 className="text-2xl font-semibold text-gray-700 mb-2">
+          Your cart is empty
+        </h2>
+        <p className="text-gray-500 mb-6">
+          Add items to your cart to get started
+        </p>
+      </div>
+    );
+  }
+
   const calculateTotal = (data = items) => {
     return data
       .reduce((sum, item) => {
@@ -96,33 +123,6 @@ const Cart = () => {
     setShowCheckout(true);
   };
 
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen text-lg">
-        Loading cart...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="flex justify-center items-center h-screen text-red-500 text-lg">
-        {error}
-      </div>
-    );
-
-  if (cart === null) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-        <ShoppingCart size={64} className="text-gray-300 mb-4" />
-        <h2 className="text-2xl font-semibold text-gray-700 mb-2">
-          Your cart is empty
-        </h2>
-        <p className="text-gray-500 mb-6">
-          Add items to your cart to get started
-        </p>
-      </div>
-    );
-  }
-
   const cartTotal = calculateTotal();
 
   return (
@@ -172,7 +172,7 @@ const Cart = () => {
                     <p>Price:${parseFloat(item.product.price).toFixed(2)}</p>
                     <p>Qty: {item.quantity}</p>
                     <p className="font-semibold text-blue-600">
-                     $
+                      $
                       {(parseFloat(item.product.price) * item.quantity).toFixed(
                         2
                       )}
@@ -215,7 +215,7 @@ const Cart = () => {
               <div className="flex justify-between items-center mb-6">
                 <span className="text-lg font-bold text-gray-900">Total</span>
                 <span className="text-2xl font-bold text-blue-600">
-                 $
+                  $
                   {(
                     parseFloat(cartTotal) +
                     parseFloat(cartTotal) * 0.1
