@@ -56,7 +56,6 @@ export const loginUser = createAsyncThunk(
         credentials,
         { withCredentials: true }
       );
-      // When login succeeds
       console.log("data",data)
       localStorage.setItem("user", JSON.stringify(data));
       return data;
